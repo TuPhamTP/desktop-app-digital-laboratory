@@ -15,3 +15,5 @@ D:\LUAN VAN\AR_APP_LV03\Project_Winform_Github\desktop-app-digital-laboratory\De
 D:\LUAN VAN\AR_APP_LV03\Project_Winform_Github\desktop-app-digital-laboratory\DesktopAppDigitalLab\obj\Debug\DesktopAppDigitalLab.pdb
 D:\LUAN VAN\AR_APP_LV03\Project_Winform_Github\desktop-app-digital-laboratory\DesktopAppDigitalLab\bin\Debug\Newtonsoft.Json.dll
 D:\LUAN VAN\AR_APP_LV03\Project_Winform_Github\desktop-app-digital-laboratory\DesktopAppDigitalLab\bin\Debug\Newtonsoft.Json.xml
+D:\LUAN VAN\AR_APP_LV03\Project_Winform_Github\desktop-app-digital-laboratory\DesktopAppDigitalLab\bin\Debug\ComponentFactory.Krypton.Toolkit.dll
+D:\LUAN VAN\AR_APP_LV03\Project_Winform_Github\desktop-app-digital-laboratory\DesktopAppDigitalLab\bin\Debug\ComponentFactory.Krypton.Toolkit.pdb

@@ -11,7 +11,7 @@ using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using S7.Net;
 using S7.Net.Types;
-using System.Net; //Sd đọc địa chỉ IP
+using System.Net; //Read IP PC
 using Newtonsoft.Json;
 
 namespace DesktopAppDigitalLab
@@ -41,6 +41,7 @@ namespace DesktopAppDigitalLab
             txtUsername.Text = "mqtt2";
             txtPassword.Text = "passwordmqtt2";
             txtID.Text = "0";
+
             topicDAToValiIFM = "DAToValiIFM: ID = " + txtID.Text;
             topicValiIFMtoDA = "ValiIFMToDA: ID = " + txtID.Text;
             timerConnect.Start();
@@ -49,68 +50,7 @@ namespace DesktopAppDigitalLab
             
         }
 
-        private void timerTSample_Tick(object sender, EventArgs e)
-        {
-            ushort idConfig = ((ushort)myPLC.Read("DB1000.DBW24"));
-            #region IDCONFIG
-            if (idConfig == 1)
-            {
-                DataDesktopAppObj.SP1SSC1UGT = ((ushort)myPLC.Read("DB1000.DBW0"));
-            }    
-            else if (idConfig == 2)
-            {
-                DataDesktopAppObj.SP2SSC1UGT = ((ushort)myPLC.Read("DB1000.DBW2"));
-            }
-            else if (idConfig == 3)
-            {
-                DataDesktopAppObj.SP1SSC2UGT = ((ushort)myPLC.Read("DB1000.DBW4"));
-            }
-            else if (idConfig == 4)
-            {
-                DataDesktopAppObj.SP2SSC2UGT = ((ushort)myPLC.Read("DB1000.DBW6"));
-            }
-            else if (idConfig == 5)
-            {
-                DataDesktopAppObj.SP1SSC1IF = ((ushort)myPLC.Read("DB1000.DBW8"));
-            }
-            else if (idConfig == 6)
-            {
-                DataDesktopAppObj.SP2SSC1IF = ((ushort)myPLC.Read("DB1000.DBW10"));
-            }
-            else if (idConfig == 7)
-            {
-                DataDesktopAppObj.SP1SSC2IF = ((ushort)myPLC.Read("DB1000.DBW12"));
-            }
-            else if (idConfig == 8)
-            {
-                DataDesktopAppObj.SP2SSC2IF = ((ushort)myPLC.Read("DB1000.DBW14"));
-            }
-            else if (idConfig == 9)
-            {
-                DataDesktopAppObj.SP1TW2000 = ((ushort)myPLC.Read("DB1000.DBW16"));
-            }
-            else if (idConfig == 10)
-            {
-                DataDesktopAppObj.rP1TW2000 = ((ushort)myPLC.Read("DB1000.DBW18"));
-            }
-            else if (idConfig == 11)
-            {
-                DataDesktopAppObj.rSLTRB3100 = ((ushort)myPLC.Read("DB1000.DBW20"));
-            }
-            else if (idConfig == 12)
-            {
-                DataDesktopAppObj.cDirRB3100 = ((byte)myPLC.Read("DB1000.DBB22"));
-            }
-            else if (idConfig == 13)
-            {
-                DataDesktopAppObj.OUT_ENCRB = ((byte)myPLC.Read("DB1000.DBB23"));
-
-            }
-            #endregion
-
-            myPLC.Write("MW93", DataValiIFMToDAObj.valUGT);
-        }
-
+        //Class
         public class DataDAToValiIFM
         {
             public ushort SP1SSC1UGT = 300;
@@ -132,9 +72,86 @@ namespace DesktopAppDigitalLab
         }
         public class DataValiIFMToDA
         {
-            public ushort valUGT = 0, valIF = 0, valTW = 0, valRB = 0;
-            public bool valKT = false, valO5C = false;
-            public bool out1UGT = false, out2UGT = false, out1IF = false, out2IF = false, outTW = false;
+            public short w0UGT, w1UGT, w0IF, w0TW, w1TW, w0RB;
+            public bool outKT, outO5C;
+        }
+
+        //Timer
+        private void timerTSample_Tick(object sender, EventArgs e)
+        {
+            if (myPLC.IsConnected)
+            {
+                ushort idConfig = ((ushort)myPLC.Read("DB1000.DBW24"));
+                #region IDCONFIG
+                if (idConfig == 1)
+                {
+                    DataDesktopAppObj.SP1SSC1UGT = ((ushort)myPLC.Read("DB1000.DBW0"));
+                }
+                else if (idConfig == 2)
+                {
+                    DataDesktopAppObj.SP2SSC1UGT = ((ushort)myPLC.Read("DB1000.DBW2"));
+                }
+                else if (idConfig == 3)
+                {
+                    DataDesktopAppObj.SP1SSC2UGT = ((ushort)myPLC.Read("DB1000.DBW4"));
+                }
+                else if (idConfig == 4)
+                {
+                    DataDesktopAppObj.SP2SSC2UGT = ((ushort)myPLC.Read("DB1000.DBW6"));
+                }
+                else if (idConfig == 5)
+                {
+                    DataDesktopAppObj.SP1SSC1IF = ((ushort)myPLC.Read("DB1000.DBW8"));
+                }
+                else if (idConfig == 6)
+                {
+                    DataDesktopAppObj.SP2SSC1IF = ((ushort)myPLC.Read("DB1000.DBW10"));
+                }
+                else if (idConfig == 7)
+                {
+                    DataDesktopAppObj.SP1SSC2IF = ((ushort)myPLC.Read("DB1000.DBW12"));
+                }
+                else if (idConfig == 8)
+                {
+                    DataDesktopAppObj.SP2SSC2IF = ((ushort)myPLC.Read("DB1000.DBW14"));
+                }
+                else if (idConfig == 9)
+                {
+                    DataDesktopAppObj.SP1TW2000 = ((ushort)myPLC.Read("DB1000.DBW16"));
+                }
+                else if (idConfig == 10)
+                {
+                    DataDesktopAppObj.rP1TW2000 = ((ushort)myPLC.Read("DB1000.DBW18"));
+                }
+                else if (idConfig == 11)
+                {
+                    DataDesktopAppObj.rSLTRB3100 = ((ushort)myPLC.Read("DB1000.DBW20"));
+                }
+                else if (idConfig == 12)
+                {
+                    DataDesktopAppObj.cDirRB3100 = ((byte)myPLC.Read("DB1000.DBB22"));
+                }
+                else if (idConfig == 13)
+                {
+                    DataDesktopAppObj.OUT_ENCRB = ((byte)myPLC.Read("DB1000.DBB23"));
+
+                }
+                #endregion
+
+                myPLC.Write("MW93", DataValiIFMToDAObj.w0UGT.ConvertToUshort());
+                myPLC.Write("MW95", DataValiIFMToDAObj.w1UGT.ConvertToUshort());
+                myPLC.Write("MW90", DataValiIFMToDAObj.w0IF.ConvertToUshort());
+                myPLC.Write("MW82", DataValiIFMToDAObj.w0TW.ConvertToUshort());
+                myPLC.Write("MW84", DataValiIFMToDAObj.w1TW.ConvertToUshort());
+                myPLC.Write("MW87", DataValiIFMToDAObj.w0RB.ConvertToUshort());
+                myPLC.Write("M68.4", DataValiIFMToDAObj.outKT);
+                myPLC.Write("M68.5", DataValiIFMToDAObj.outO5C);
+
+
+            }
+
+
+
         }
 
         private void timerMQTT_Tick(object sender, EventArgs e)
@@ -152,20 +169,63 @@ namespace DesktopAppDigitalLab
             }
         }
 
-        
+        private void timerConnect_Tick(object sender, EventArgs e)
+        {
+            if (flagPLCSIM == 1 || flagPLCSIM == 2)
+            {
+                if (myPLC.IsConnected)
+                {
+                    lblNotifyConnectPLCSIM.Text = "   Kết nối thành công!";
+                    picConnectPLCSIMOFF.Visible = false;
+                    picConnectPLCSIMON.Visible = true;
+                }
+                else
+                {
+                    lblNotifyConnectPLCSIM.Text = "Kết nối không thành công!";
+                    picConnectPLCSIMOFF.Visible = true;
+                    picConnectPLCSIMON.Visible = false;
+                }
+            }
 
-        private void btnConnectPLCSIM_Click(object sender, EventArgs e)
+            if (flagPLC == 1 || flagPLC == 2)
+            {
+                if (myPLC.IsConnected)
+                {
+                    lblNotifyConnectPLC.Text = "   Kết nối thành công!";
+                    picConnectPLCON.Visible = true;
+                    picConnectPLCOFF.Visible = false;
+                }
+                else
+                {
+                    lblNotifyConnectPLC.Text = "Kết nối không thành công!";
+                    picConnectPLCON.Visible = false;
+                    picConnectPLCOFF.Visible = true;
+                }
+            }
+
+        }
+
+        //Button 
+        private async void btnConnectPLCSIM_Click(object sender, EventArgs e)
         {
             timerTSample.Start();
             if (clickBtnPLCSIM == false)
             {
                 clickBtnPLCSIM = true;
                 flagPLC = 0;
-                btnConnectPLC.Enabled = false;
+                btnConnectPLC.Visible = false;
                 btnConnectPLCSIM.Text = "HỦY";
                 strIPPC = txtIPPC.Text;
                 myPLC = new Plc(CpuType.S71200, strIPPC, 0, 1);
-                myPLC.Open();
+                try
+                {
+                    await myPLC.OpenAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
                 flagPLCSIM = 1;
             }
             else
@@ -173,14 +233,14 @@ namespace DesktopAppDigitalLab
                 timerTSample.Stop();
                 clickBtnPLCSIM = false;
                 flagPLCSIM = 2;
-                btnConnectPLC.Enabled = true;
+                btnConnectPLC.Visible = true;
                 btnConnectPLCSIM.Text = "KẾT NỐI";
                 myPLC.Close();
 
             }
         }
 
-        private void btnConnectPLC_Click(object sender, EventArgs e)
+        private async void btnConnectPLC_Click(object sender, EventArgs e)
         {
             
                 timerTSample.Start();
@@ -188,11 +248,20 @@ namespace DesktopAppDigitalLab
                 {
                     clickBtnPLC = true;
                     flagPLCSIM = 0;
-                    btnConnectPLCSIM.Enabled = false;
+                    btnConnectPLCSIM.Visible = false;
                     btnConnectPLC.Text = "HỦY";
                     myPLC = new Plc(CpuType.S71200, "192.168.0.1", 0, 1);
-                    myPLC.Open();
-                    txtErrorCode.Text = myPLC.Open().ToString();
+                try
+                {
+                    await myPLC.OpenAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                    
                     flagPLC = 1;
                 }
                 else
@@ -200,7 +269,7 @@ namespace DesktopAppDigitalLab
                     timerTSample.Stop();
                     clickBtnPLC = false;
                     flagPLC = 2;
-                    btnConnectPLCSIM.Enabled = true;
+                    btnConnectPLCSIM.Visible = true;
                     btnConnectPLC.Text = "KẾT NỐI";
                     myPLC.Close();
 
@@ -219,14 +288,23 @@ namespace DesktopAppDigitalLab
             {
                 desktopAppClient = new MqttClient(strBrokerAddress);
                 string clientId = Guid.NewGuid().ToString();
-                desktopAppClient.Connect(clientId, strUsername, strPassword);
+                try
+                {
+                    desktopAppClient.Connect(clientId, strUsername, strPassword);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
                 if (desktopAppClient.IsConnected)
                 {
                     desktopAppClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
                     desktopAppClient.Subscribe(new string[] { topicValiIFMtoDA }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
                     clickBtnBroker = true;
-                    lblNotifyConnectBroker.Text = "Kết nối thành công!";
-                    prgConnectMQTT.Value = 100;
+                    lblNotifyConnectBroker.Text = "   Kết nối thành công!";
+                    picConnectBrokerON.Visible = true;
+                    picConnectBrokerOFF.Visible = false;
                     btnConnectBroker.Text = "HỦY";
                     timerMQTT.Start();
                 }    
@@ -236,15 +314,11 @@ namespace DesktopAppDigitalLab
                 clickBtnBroker = false;
                 desktopAppClient.Disconnect();
                 lblNotifyConnectBroker.Text = "Kết nối không thành công!";
-                prgConnectMQTT.Value = 0;
+                picConnectBrokerON.Visible = false;
+                picConnectBrokerOFF.Visible = true;
                 btnConnectBroker.Text = "KẾT NỐI";
             }    
             
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void btnSubmitID_Click(object sender, EventArgs e)
@@ -255,41 +329,12 @@ namespace DesktopAppDigitalLab
             topicValiIFMtoDA = "ValiIFMToDA: ID = " + txtID.Text;
         }
 
-        void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        //Function
+        private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             msgValiIFMToDA = Encoding.UTF8.GetString(e.Message);
-            //string[] msg_receive = Encoding.UTF8.GetString(e.Message).Split(':');
-            //msg_split = msg_receive[1];
-            //textBox_Rev.Invoke((MethodInvoker)(() => textBox_Rev.Text = UGT524str)); // hiển thị message tự động lên textbox
         }
-
-        private void timerConnect_Tick(object sender, EventArgs e)
-        {
-            if (flagPLCSIM == 1 || flagPLCSIM == 2)
-            {
-                if (myPLC.IsConnected)
-                {
-                    prgConnectPLCSIM.Value = 100;
-                }
-                else
-                {
-                    prgConnectPLCSIM.Value = 0;
-                }
-            }
-
-            if (flagPLC == 1 || flagPLC == 2)
-            {
-                if (myPLC.IsConnected)
-                {
-                    prgConnectPLC.Value = 100;
-                }
-                else
-                {
-                    prgConnectPLC.Value = 0;
-                }
-            }
-            
-        }
+        
         private string GetIPAddress()
         {
             string IPAddress = string.Empty;
@@ -307,6 +352,11 @@ namespace DesktopAppDigitalLab
             return IPAddress;
         }
 
+        //Not use
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
 
         private void label2_Click(object sender, EventArgs e)
         {
@@ -328,7 +378,19 @@ namespace DesktopAppDigitalLab
 
         }
 
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void txtErrorCode_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        private void lblNotifyConnectBroker_Click(object sender, EventArgs e)
         {
 
         }
