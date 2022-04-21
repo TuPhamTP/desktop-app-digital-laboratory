@@ -115,5 +115,11 @@
   <ItemGroup>
     <None Include="Resources\Tick_OFF.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eyes-pass-on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eyes-pass-off.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

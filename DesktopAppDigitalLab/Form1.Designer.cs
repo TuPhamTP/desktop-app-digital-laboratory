@@ -32,8 +32,9 @@ namespace DesktopAppDigitalLab
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.timerConnect = new System.Windows.Forms.Timer(this.components);
-            this.timerTSample = new System.Windows.Forms.Timer(this.components);
+            this.timerReadPLCSIM = new System.Windows.Forms.Timer(this.components);
             this.timerMQTT = new System.Windows.Forms.Timer(this.components);
+            this.timerWritePLCSIM = new System.Windows.Forms.Timer(this.components);
             this.panel5 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -42,6 +43,8 @@ namespace DesktopAppDigitalLab
             this.lblID = new System.Windows.Forms.Label();
             this.txtID = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.picEyeOff = new System.Windows.Forms.PictureBox();
+            this.picEyeOn = new System.Windows.Forms.PictureBox();
             this.picConnectBrokerOFF = new System.Windows.Forms.PictureBox();
             this.picConnectBrokerON = new System.Windows.Forms.PictureBox();
             this.lblNotifyConnectBroker = new System.Windows.Forms.Label();
@@ -60,33 +63,35 @@ namespace DesktopAppDigitalLab
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.txtBrokerAddress = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.picConnectPLCOFF = new System.Windows.Forms.PictureBox();
             this.picConnectPLCON = new System.Windows.Forms.PictureBox();
             this.lblNotifyConnectPLC = new System.Windows.Forms.Label();
             this.panel11 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.btnConnectPLC = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.txtIPPC = new System.Windows.Forms.TextBox();
+            this.txtIPPLC = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.picConnectPLCSIMOFF = new System.Windows.Forms.PictureBox();
             this.picConnectPLCSIMON = new System.Windows.Forms.PictureBox();
             this.lblNotifyConnectPLCSIM = new System.Windows.Forms.Label();
             this.panel10 = new System.Windows.Forms.Panel();
             this.label9 = new System.Windows.Forms.Label();
             this.btnConnectPLCSIM = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
-            this.txtIPPLC = new System.Windows.Forms.TextBox();
-            this.picConnectPLCSIMOFF = new System.Windows.Forms.PictureBox();
-            this.picConnectPLCOFF = new System.Windows.Forms.PictureBox();
+            this.txtIPPC = new System.Windows.Forms.TextBox();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEyeOff)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picEyeOn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectBrokerOFF)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectBrokerON)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCOFF)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCON)).BeginInit();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCSIMON)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCSIMOFF)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCOFF)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCSIMON)).BeginInit();
             this.SuspendLayout();
             // 
             // timerConnect
@@ -94,13 +99,17 @@ namespace DesktopAppDigitalLab
             this.timerConnect.Interval = 10;
             this.timerConnect.Tick += new System.EventHandler(this.timerConnect_Tick);
             // 
-            // timerTSample
+            // timerReadPLCSIM
             // 
-            this.timerTSample.Tick += new System.EventHandler(this.timerTSample_Tick);
+            this.timerReadPLCSIM.Tick += new System.EventHandler(this.timerReadPLCSIM_Tick);
             // 
             // timerMQTT
             // 
             this.timerMQTT.Tick += new System.EventHandler(this.timerMQTT_Tick);
+            // 
+            // timerWritePLCSIM
+            // 
+            this.timerWritePLCSIM.Tick += new System.EventHandler(this.timerWritePLCSIM_Tick);
             // 
             // panel5
             // 
@@ -198,6 +207,8 @@ namespace DesktopAppDigitalLab
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = global::DesktopAppDigitalLab.Properties.Resources.Panel_638x395;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.picEyeOff);
+            this.panel1.Controls.Add(this.picEyeOn);
             this.panel1.Controls.Add(this.picConnectBrokerOFF);
             this.panel1.Controls.Add(this.picConnectBrokerON);
             this.panel1.Controls.Add(this.lblNotifyConnectBroker);
@@ -220,6 +231,28 @@ namespace DesktopAppDigitalLab
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(638, 395);
             this.panel1.TabIndex = 0;
+            // 
+            // picEyeOff
+            // 
+            this.picEyeOff.BackgroundImage = global::DesktopAppDigitalLab.Properties.Resources.eyes_pass_off;
+            this.picEyeOff.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picEyeOff.Location = new System.Drawing.Point(584, 236);
+            this.picEyeOff.Name = "picEyeOff";
+            this.picEyeOff.Size = new System.Drawing.Size(30, 18);
+            this.picEyeOff.TabIndex = 8;
+            this.picEyeOff.TabStop = false;
+            this.picEyeOff.Click += new System.EventHandler(this.picEyeOff_Click);
+            // 
+            // picEyeOn
+            // 
+            this.picEyeOn.BackgroundImage = global::DesktopAppDigitalLab.Properties.Resources.eyes_pass_on;
+            this.picEyeOn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picEyeOn.Location = new System.Drawing.Point(584, 238);
+            this.picEyeOn.Name = "picEyeOn";
+            this.picEyeOn.Size = new System.Drawing.Size(30, 15);
+            this.picEyeOn.TabIndex = 7;
+            this.picEyeOn.TabStop = false;
+            this.picEyeOn.Click += new System.EventHandler(this.picEyeOn_Click);
             // 
             // picConnectBrokerOFF
             // 
@@ -392,9 +425,10 @@ namespace DesktopAppDigitalLab
             this.txtPassword.ForeColor = System.Drawing.Color.Gainsboro;
             this.txtPassword.Location = new System.Drawing.Point(364, 232);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(177, 28);
+            this.txtPassword.Size = new System.Drawing.Size(196, 28);
             this.txtPassword.TabIndex = 0;
             this.txtPassword.Text = "passwordmqtt2";
+            this.txtPassword.UseSystemPasswordChar = true;
             this.txtPassword.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // txtUsername
@@ -433,11 +467,21 @@ namespace DesktopAppDigitalLab
             this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.btnConnectPLC);
             this.panel2.Controls.Add(this.label7);
-            this.panel2.Controls.Add(this.txtIPPC);
+            this.panel2.Controls.Add(this.txtIPPLC);
             this.panel2.Location = new System.Drawing.Point(682, 271);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(558, 210);
             this.panel2.TabIndex = 1;
+            // 
+            // picConnectPLCOFF
+            // 
+            this.picConnectPLCOFF.BackgroundImage = global::DesktopAppDigitalLab.Properties.Resources.Tick_OFF;
+            this.picConnectPLCOFF.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picConnectPLCOFF.Location = new System.Drawing.Point(510, 39);
+            this.picConnectPLCOFF.Name = "picConnectPLCOFF";
+            this.picConnectPLCOFF.Size = new System.Drawing.Size(30, 30);
+            this.picConnectPLCOFF.TabIndex = 15;
+            this.picConnectPLCOFF.TabStop = false;
             // 
             // picConnectPLCON
             // 
@@ -512,21 +556,21 @@ namespace DesktopAppDigitalLab
             this.label7.ForeColor = System.Drawing.Color.White;
             this.label7.Location = new System.Drawing.Point(23, 107);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(178, 29);
+            this.label7.Size = new System.Drawing.Size(190, 29);
             this.label7.TabIndex = 1;
-            this.label7.Text = "Địa chỉ IP (PC):";
+            this.label7.Text = "Địa chỉ IP (PLC):";
             // 
-            // txtIPPC
+            // txtIPPLC
             // 
-            this.txtIPPC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(28)))), ((int)(((byte)(31)))));
-            this.txtIPPC.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtIPPC.Font = new System.Drawing.Font("Roboto Black", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtIPPC.ForeColor = System.Drawing.Color.Gainsboro;
-            this.txtIPPC.Location = new System.Drawing.Point(26, 139);
-            this.txtIPPC.Name = "txtIPPC";
-            this.txtIPPC.Size = new System.Drawing.Size(145, 28);
-            this.txtIPPC.TabIndex = 0;
-            this.txtIPPC.Text = "192.168.0.10";
+            this.txtIPPLC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(28)))), ((int)(((byte)(31)))));
+            this.txtIPPLC.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtIPPLC.Font = new System.Drawing.Font("Roboto Black", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtIPPLC.ForeColor = System.Drawing.Color.Gainsboro;
+            this.txtIPPLC.Location = new System.Drawing.Point(29, 139);
+            this.txtIPPLC.Name = "txtIPPLC";
+            this.txtIPPLC.Size = new System.Drawing.Size(145, 28);
+            this.txtIPPLC.TabIndex = 0;
+            this.txtIPPLC.Text = "192.168.0.1";
             // 
             // panel3
             // 
@@ -540,11 +584,21 @@ namespace DesktopAppDigitalLab
             this.panel3.Controls.Add(this.label9);
             this.panel3.Controls.Add(this.btnConnectPLCSIM);
             this.panel3.Controls.Add(this.label11);
-            this.panel3.Controls.Add(this.txtIPPLC);
+            this.panel3.Controls.Add(this.txtIPPC);
             this.panel3.Location = new System.Drawing.Point(682, 36);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(558, 210);
             this.panel3.TabIndex = 1;
+            // 
+            // picConnectPLCSIMOFF
+            // 
+            this.picConnectPLCSIMOFF.BackgroundImage = global::DesktopAppDigitalLab.Properties.Resources.Tick_OFF;
+            this.picConnectPLCSIMOFF.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picConnectPLCSIMOFF.Location = new System.Drawing.Point(519, 32);
+            this.picConnectPLCSIMOFF.Name = "picConnectPLCSIMOFF";
+            this.picConnectPLCSIMOFF.Size = new System.Drawing.Size(30, 30);
+            this.picConnectPLCSIMOFF.TabIndex = 14;
+            this.picConnectPLCSIMOFF.TabStop = false;
             // 
             // picConnectPLCSIMON
             // 
@@ -589,9 +643,9 @@ namespace DesktopAppDigitalLab
             this.label9.ForeColor = System.Drawing.Color.White;
             this.label9.Location = new System.Drawing.Point(21, 100);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(190, 29);
+            this.label9.Size = new System.Drawing.Size(178, 29);
             this.label9.TabIndex = 10;
-            this.label9.Text = "Địa chỉ IP (PLC):";
+            this.label9.Text = "Địa chỉ IP (PC):";
             // 
             // btnConnectPLCSIM
             // 
@@ -624,37 +678,17 @@ namespace DesktopAppDigitalLab
             this.label11.TabIndex = 8;
             this.label11.Text = "THIẾT LẬP KẾT NỐI ĐẾN PLCSIM";
             // 
-            // txtIPPLC
+            // txtIPPC
             // 
-            this.txtIPPLC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(28)))), ((int)(((byte)(31)))));
-            this.txtIPPLC.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtIPPLC.Font = new System.Drawing.Font("Roboto Black", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtIPPLC.ForeColor = System.Drawing.Color.Gainsboro;
-            this.txtIPPLC.Location = new System.Drawing.Point(28, 139);
-            this.txtIPPLC.Name = "txtIPPLC";
-            this.txtIPPLC.Size = new System.Drawing.Size(145, 28);
-            this.txtIPPLC.TabIndex = 0;
-            this.txtIPPLC.Text = "192.168.0.1";
-            // 
-            // picConnectPLCSIMOFF
-            // 
-            this.picConnectPLCSIMOFF.BackgroundImage = global::DesktopAppDigitalLab.Properties.Resources.Tick_OFF;
-            this.picConnectPLCSIMOFF.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picConnectPLCSIMOFF.Location = new System.Drawing.Point(519, 32);
-            this.picConnectPLCSIMOFF.Name = "picConnectPLCSIMOFF";
-            this.picConnectPLCSIMOFF.Size = new System.Drawing.Size(30, 30);
-            this.picConnectPLCSIMOFF.TabIndex = 14;
-            this.picConnectPLCSIMOFF.TabStop = false;
-            // 
-            // picConnectPLCOFF
-            // 
-            this.picConnectPLCOFF.BackgroundImage = global::DesktopAppDigitalLab.Properties.Resources.Tick_OFF;
-            this.picConnectPLCOFF.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picConnectPLCOFF.Location = new System.Drawing.Point(510, 39);
-            this.picConnectPLCOFF.Name = "picConnectPLCOFF";
-            this.picConnectPLCOFF.Size = new System.Drawing.Size(30, 30);
-            this.picConnectPLCOFF.TabIndex = 15;
-            this.picConnectPLCOFF.TabStop = false;
+            this.txtIPPC.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(28)))), ((int)(((byte)(31)))));
+            this.txtIPPC.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtIPPC.Font = new System.Drawing.Font("Roboto Black", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtIPPC.ForeColor = System.Drawing.Color.Gainsboro;
+            this.txtIPPC.Location = new System.Drawing.Point(26, 139);
+            this.txtIPPC.Name = "txtIPPC";
+            this.txtIPPC.Size = new System.Drawing.Size(145, 28);
+            this.txtIPPC.TabIndex = 0;
+            this.txtIPPC.Text = "192.168.0.10";
             // 
             // Form1
             // 
@@ -662,7 +696,7 @@ namespace DesktopAppDigitalLab
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(40)))));
-            this.ClientSize = new System.Drawing.Size(1262, 673);
+            this.ClientSize = new System.Drawing.Size(1258, 669);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
@@ -679,23 +713,25 @@ namespace DesktopAppDigitalLab
             this.panel5.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEyeOff)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picEyeOn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectBrokerOFF)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectBrokerON)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCOFF)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCON)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCSIMON)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCSIMOFF)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCOFF)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCSIMON)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.Timer timerConnect;
-        private System.Windows.Forms.Timer timerTSample;
+        private System.Windows.Forms.Timer timerReadPLCSIM;
         private System.Windows.Forms.Timer timerMQTT;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnConnectPLC;
@@ -740,6 +776,9 @@ namespace DesktopAppDigitalLab
         private System.Windows.Forms.PictureBox picConnectBrokerOFF;
         private System.Windows.Forms.PictureBox picConnectPLCSIMOFF;
         private System.Windows.Forms.PictureBox picConnectPLCOFF;
+        private System.Windows.Forms.Timer timerWritePLCSIM;
+        private System.Windows.Forms.PictureBox picEyeOn;
+        private System.Windows.Forms.PictureBox picEyeOff;
     }
 }
 

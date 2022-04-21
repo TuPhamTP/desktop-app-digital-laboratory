@@ -13,6 +13,7 @@ using S7.Net;
 using S7.Net.Types;
 using System.Net; //Read IP PC
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace DesktopAppDigitalLab
 {
@@ -25,7 +26,7 @@ namespace DesktopAppDigitalLab
         public string topicValiIFMtoDA, topicDAToValiIFM;
         public bool clickBtnBroker, clickBtnPLCSIM, clickBtnPLC;
         public int flagPLCSIM, flagPLC;
-        public DataDAToValiIFM DataDesktopAppObj = new DataDAToValiIFM();
+        public DataDAToValiIFM DataDAToValiIFMObj = new DataDAToValiIFM();
         public DataValiIFMToDA DataValiIFMToDAObj = new DataValiIFMToDA();
         public string jsonPublish;
 
@@ -45,12 +46,26 @@ namespace DesktopAppDigitalLab
             topicDAToValiIFM = "DAToValiIFM: ID = " + txtID.Text;
             topicValiIFMtoDA = "ValiIFMToDA: ID = " + txtID.Text;
             timerConnect.Start();
-            
 
-            
+            dataItemsWritePLCSIM.Add(w0UGTItem);
+            dataItemsWritePLCSIM.Add(w1UGTItem);
+            dataItemsWritePLCSIM.Add(w0IFItem);
+            dataItemsWritePLCSIM.Add(w0TWItem);
+            dataItemsWritePLCSIM.Add(w1TWItem);
+            dataItemsWritePLCSIM.Add(w0RBItem);
+            dataItemsWritePLCSIM.Add(outO5CItem);
+            dataItemsWritePLCSIM.Add(outKTItem);
+
+            dataItemsReadPLCSIM.Add(idConfigItem);
+            dataItemsReadPLCSIM.Add(disUGTItem);
+            dataItemsReadPLCSIM.Add(disIFItem);
+            dataItemsReadPLCSIM.Add(temTWItem);
+            dataItemsReadPLCSIM.Add(angleRBItem);
+            dataItemsReadPLCSIM.Add(byte65Item);
+            dataItemsReadPLCSIM.Add(byte67Item);
         }
-
-        //Class
+         
+        //Class & List Data
         public class DataDAToValiIFM
         {
             public ushort SP1SSC1UGT = 300;
@@ -69,94 +84,291 @@ namespace DesktopAppDigitalLab
             public ushort rSLTRB3100 = 1024;
             public byte cDirRB3100 = 0;
             public byte OUT_ENCRB = 1;
+
+            public ushort disUGT = 0;
+            public float disIF = 0;
+            public float temTW = 0;
+            public float angleRB = 0;
+            public byte byte65 = 0, byte67 = 0;
         }
         public class DataValiIFMToDA
         {
             public short w0UGT, w1UGT, w0IF, w0TW, w1TW, w0RB;
             public bool outKT, outO5C;
+
         }
 
+        private static List<DataItem> dataItemsWritePLCSIM = new List<DataItem>();
+        #region DataItemWritePLCSIM
+        private static DataItem w0UGTItem = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 93,
+            Value = new object()
+        };
+        private static DataItem w1UGTItem = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 95,
+            Value = new object()
+        };
+        private static DataItem w0IFItem = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 90,
+            Value = new object()
+        };
+        private static DataItem w0TWItem = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 82,
+            Value = new object()
+        };
+        private static DataItem w1TWItem = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 84,
+            Value = new object()
+        };
+        private static DataItem w0RBItem = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 87,
+            Value = new object()
+        };
+        private static DataItem outKTItem = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Bit,
+            DB = 0,
+            BitAdr = 4,
+            Count = 1,
+            StartByteAdr = 68,
+            Value = new object()
+        };
+        private static DataItem outO5CItem = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Bit,
+            DB = 0,
+            BitAdr = 5,
+            Count = 1,
+            StartByteAdr = 68,
+            Value = new object()
+        };
+        #endregion
+
+        #region DataItemReadPLCSIM
+        private static List<DataItem> dataItemsReadPLCSIM = new List<DataItem>();
+        private static DataItem idConfigItem = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Word,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 24,
+            Value = new object()
+        };
+        private static DataItem disUGTItem = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Word,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 26,
+            Value = new object()
+        };
+        private static DataItem disIFItem = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.DWord,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 28,
+            Value = new object()
+        };
+        private static DataItem temTWItem = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.DWord,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 32,
+            Value = new object()
+        };
+        private static DataItem angleRBItem = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.DWord,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 36,
+            Value = new object()
+        };
+        private static DataItem byte65Item = new DataItem()
+        {
+            DataType = DataType.Output,
+            VarType = VarType.Byte,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 65,
+            Value = new object()
+        };
+        private static DataItem byte67Item = new DataItem()
+        {
+            DataType = DataType.Output,
+            VarType = VarType.Byte,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 67,
+            Value = new object()
+        };
+        #endregion
         //Timer
-        private void timerTSample_Tick(object sender, EventArgs e)
+        private async void timerReadPLCSIM_Tick(object sender, EventArgs e)
         {
             if (myPLC.IsConnected)
             {
-                ushort idConfig = ((ushort)myPLC.Read("DB1000.DBW24"));
-                #region IDCONFIG
-                if (idConfig == 1)
+                ushort idConfig = 0;
+                try
                 {
-                    DataDesktopAppObj.SP1SSC1UGT = ((ushort)myPLC.Read("DB1000.DBW0"));
-                }
-                else if (idConfig == 2)
-                {
-                    DataDesktopAppObj.SP2SSC1UGT = ((ushort)myPLC.Read("DB1000.DBW2"));
-                }
-                else if (idConfig == 3)
-                {
-                    DataDesktopAppObj.SP1SSC2UGT = ((ushort)myPLC.Read("DB1000.DBW4"));
-                }
-                else if (idConfig == 4)
-                {
-                    DataDesktopAppObj.SP2SSC2UGT = ((ushort)myPLC.Read("DB1000.DBW6"));
-                }
-                else if (idConfig == 5)
-                {
-                    DataDesktopAppObj.SP1SSC1IF = ((ushort)myPLC.Read("DB1000.DBW8"));
-                }
-                else if (idConfig == 6)
-                {
-                    DataDesktopAppObj.SP2SSC1IF = ((ushort)myPLC.Read("DB1000.DBW10"));
-                }
-                else if (idConfig == 7)
-                {
-                    DataDesktopAppObj.SP1SSC2IF = ((ushort)myPLC.Read("DB1000.DBW12"));
-                }
-                else if (idConfig == 8)
-                {
-                    DataDesktopAppObj.SP2SSC2IF = ((ushort)myPLC.Read("DB1000.DBW14"));
-                }
-                else if (idConfig == 9)
-                {
-                    DataDesktopAppObj.SP1TW2000 = ((ushort)myPLC.Read("DB1000.DBW16"));
-                }
-                else if (idConfig == 10)
-                {
-                    DataDesktopAppObj.rP1TW2000 = ((ushort)myPLC.Read("DB1000.DBW18"));
-                }
-                else if (idConfig == 11)
-                {
-                    DataDesktopAppObj.rSLTRB3100 = ((ushort)myPLC.Read("DB1000.DBW20"));
-                }
-                else if (idConfig == 12)
-                {
-                    DataDesktopAppObj.cDirRB3100 = ((byte)myPLC.Read("DB1000.DBB22"));
-                }
-                else if (idConfig == 13)
-                {
-                    DataDesktopAppObj.OUT_ENCRB = ((byte)myPLC.Read("DB1000.DBB23"));
+                    myPLC.ReadMultipleVars(dataItemsReadPLCSIM);
+                    idConfig = (ushort)dataItemsReadPLCSIM[0].Value;
+                    DataDAToValiIFMObj.disUGT = (ushort)dataItemsReadPLCSIM[1].Value;
+                    DataDAToValiIFMObj.disIF = ((uint)dataItemsReadPLCSIM[2].Value).ConvertToFloat();
+                    DataDAToValiIFMObj.temTW = ((uint)dataItemsReadPLCSIM[3].Value).ConvertToFloat();
+                    DataDAToValiIFMObj.angleRB = ((uint)dataItemsReadPLCSIM[4].Value).ConvertToFloat();
+                    DataDAToValiIFMObj.byte65 = ((byte)dataItemsReadPLCSIM[5].Value);
+                    DataDAToValiIFMObj.byte67 = ((byte)dataItemsReadPLCSIM[6].Value);
 
+                    //idConfig = ((ushort)await myPLC.ReadAsync("DB1000.DBW24"));
+
+                    #region IDCONFIG
+                    if (idConfig == 1)
+                    {
+                        DataDAToValiIFMObj.SP1SSC1UGT = ((ushort)await myPLC.ReadAsync("DB1000.DBW0"));
+                    }
+                    else if (idConfig == 2)
+                    {
+                        DataDAToValiIFMObj.SP2SSC1UGT = ((ushort)await myPLC.ReadAsync("DB1000.DBW2"));
+                    }
+                    else if (idConfig == 3)
+                    {
+                        DataDAToValiIFMObj.SP1SSC2UGT = ((ushort)await myPLC.ReadAsync("DB1000.DBW4"));
+                    }
+                    else if (idConfig == 4)
+                    {
+                        DataDAToValiIFMObj.SP2SSC2UGT = ((ushort)await myPLC.ReadAsync("DB1000.DBW6"));
+                    }
+                    else if (idConfig == 5)
+                    {
+                        DataDAToValiIFMObj.SP1SSC1IF = ((ushort)await myPLC.ReadAsync("DB1000.DBW8"));
+                    }
+                    else if (idConfig == 6)
+                    {
+                        DataDAToValiIFMObj.SP2SSC1IF = ((ushort)await myPLC.ReadAsync("DB1000.DBW10"));
+                    }
+                    else if (idConfig == 7)
+                    {
+                        DataDAToValiIFMObj.SP1SSC2IF = ((ushort)await myPLC.ReadAsync("DB1000.DBW12"));
+                    }
+                    else if (idConfig == 8)
+                    {
+                        DataDAToValiIFMObj.SP2SSC2IF = ((ushort)await myPLC.ReadAsync("DB1000.DBW14"));
+                    }
+                    else if (idConfig == 9)
+                    {
+                        DataDAToValiIFMObj.SP1TW2000 = ((ushort)await myPLC.ReadAsync("DB1000.DBW16"));
+                    }
+                    else if (idConfig == 10)
+                    {
+                        DataDAToValiIFMObj.rP1TW2000 = ((ushort)await myPLC.ReadAsync("DB1000.DBW18"));
+                    }
+                    else if (idConfig == 11)
+                    {
+                        DataDAToValiIFMObj.rSLTRB3100 = ((ushort)await myPLC.ReadAsync("DB1000.DBW20"));
+                    }
+                    else if (idConfig == 12)
+                    {
+                        DataDAToValiIFMObj.cDirRB3100 = ((byte)myPLC.Read("DB1000.DBB22"));
+                    }
+                    else if (idConfig == 13)
+                    {
+                        DataDAToValiIFMObj.OUT_ENCRB = ((byte)myPLC.Read("DB1000.DBB23"));
+
+                    }
+                    #endregion
                 }
-                #endregion
-
-                myPLC.Write("MW93", DataValiIFMToDAObj.w0UGT.ConvertToUshort());
-                myPLC.Write("MW95", DataValiIFMToDAObj.w1UGT.ConvertToUshort());
-                myPLC.Write("MW90", DataValiIFMToDAObj.w0IF.ConvertToUshort());
-                myPLC.Write("MW82", DataValiIFMToDAObj.w0TW.ConvertToUshort());
-                myPLC.Write("MW84", DataValiIFMToDAObj.w1TW.ConvertToUshort());
-                myPLC.Write("MW87", DataValiIFMToDAObj.w0RB.ConvertToUshort());
-                myPLC.Write("M68.4", DataValiIFMToDAObj.outKT);
-                myPLC.Write("M68.5", DataValiIFMToDAObj.outO5C);
-
-
+                catch (Exception ex1)
+                {
+                    //MessageBox.Show(ex1.Message);
+                }
+                
             }
 
 
 
         }
 
+        private async  void timerWritePLCSIM_Tick(object sender, EventArgs e)
+        {
+            if(myPLC.IsConnected)
+            {
+                try
+                {
+                    w0UGTItem.Value = (ushort)DataValiIFMToDAObj.w0UGT;
+                    w1UGTItem.Value = (ushort)DataValiIFMToDAObj.w1UGT;
+                    w0IFItem.Value = (ushort)DataValiIFMToDAObj.w0IF;
+                    w0TWItem.Value = (ushort)DataValiIFMToDAObj.w0TW;
+                    w1TWItem.Value = (ushort)DataValiIFMToDAObj.w1TW;
+                    w0RBItem.Value = (ushort)DataValiIFMToDAObj.w0RB;
+                    outKTItem.Value = DataValiIFMToDAObj.outKT;
+                    outO5CItem.Value = DataValiIFMToDAObj.outO5C;
+
+                    await myPLC.WriteAsync(dataItemsWritePLCSIM.ToArray());
+                }
+                catch (Exception ex2)
+                {
+                    //MessageBox.Show(ex2.Message);
+                }
+            }    
+            
+        }
+
         private void timerMQTT_Tick(object sender, EventArgs e)
         {
-            jsonPublish = JsonConvert.SerializeObject(DataDesktopAppObj);
+            jsonPublish = JsonConvert.SerializeObject(DataDAToValiIFMObj);
             if (desktopAppClient.IsConnected)
             {
                 desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
@@ -208,7 +420,8 @@ namespace DesktopAppDigitalLab
         //Button 
         private async void btnConnectPLCSIM_Click(object sender, EventArgs e)
         {
-            timerTSample.Start();
+            timerReadPLCSIM.Start();
+            timerWritePLCSIM.Start();
             if (clickBtnPLCSIM == false)
             {
                 clickBtnPLCSIM = true;
@@ -230,7 +443,8 @@ namespace DesktopAppDigitalLab
             }
             else
             {
-                timerTSample.Stop();
+                timerReadPLCSIM.Stop();
+                timerWritePLCSIM.Stop();
                 clickBtnPLCSIM = false;
                 flagPLCSIM = 2;
                 btnConnectPLC.Visible = true;
@@ -243,7 +457,7 @@ namespace DesktopAppDigitalLab
         private async void btnConnectPLC_Click(object sender, EventArgs e)
         {
             
-                timerTSample.Start();
+                timerReadPLCSIM.Start();
                 if (clickBtnPLC == false)
                 {
                     clickBtnPLC = true;
@@ -266,7 +480,7 @@ namespace DesktopAppDigitalLab
                 }
                 else
                 {
-                    timerTSample.Stop();
+                    timerReadPLCSIM.Stop();
                     clickBtnPLC = false;
                     flagPLC = 2;
                     btnConnectPLCSIM.Visible = true;
@@ -329,6 +543,22 @@ namespace DesktopAppDigitalLab
             topicValiIFMtoDA = "ValiIFMToDA: ID = " + txtID.Text;
         }
 
+        private void picEyeOff_Click(object sender, EventArgs e)
+        {
+            txtPassword.UseSystemPasswordChar = false;
+            picEyeOff.Visible = false;
+            picEyeOn.Visible = true;
+        }
+
+        private void picEyeOn_Click(object sender, EventArgs e)
+        {
+            txtPassword.UseSystemPasswordChar = true;
+            picEyeOff.Visible = true;
+            picEyeOn.Visible = false;
+        }
+
+
+
         //Function
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
@@ -353,6 +583,7 @@ namespace DesktopAppDigitalLab
         }
 
         //Not use
+        #region NotUse
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -388,11 +619,11 @@ namespace DesktopAppDigitalLab
 
         }
 
-
-
         private void lblNotifyConnectBroker_Click(object sender, EventArgs e)
         {
 
         }
+
+        #endregion
     }
 }
