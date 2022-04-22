@@ -80,6 +80,8 @@ namespace DesktopAppDigitalLab
             this.btnConnectPLCSIM = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.txtIPPC = new System.Windows.Forms.TextBox();
+            this.timerReadPLC = new System.Windows.Forms.Timer(this.components);
+            this.timerWritePLC = new System.Windows.Forms.Timer(this.components);
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picEyeOff)).BeginInit();
@@ -690,6 +692,14 @@ namespace DesktopAppDigitalLab
             this.txtIPPC.TabIndex = 0;
             this.txtIPPC.Text = "192.168.0.10";
             // 
+            // timerReadPLC
+            // 
+            this.timerReadPLC.Tick += new System.EventHandler(this.timerReadPLC_Tick);
+            // 
+            // timerWritePLC
+            // 
+            this.timerWritePLC.Tick += new System.EventHandler(this.timerWritePLC_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
@@ -779,6 +789,8 @@ namespace DesktopAppDigitalLab
         private System.Windows.Forms.Timer timerWritePLCSIM;
         private System.Windows.Forms.PictureBox picEyeOn;
         private System.Windows.Forms.PictureBox picEyeOff;
+        private System.Windows.Forms.Timer timerReadPLC;
+        private System.Windows.Forms.Timer timerWritePLC;
     }
 }
 

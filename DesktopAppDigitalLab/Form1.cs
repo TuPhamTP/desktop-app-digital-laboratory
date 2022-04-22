@@ -98,6 +98,35 @@ namespace DesktopAppDigitalLab
 
         }
 
+        public class DataDAToValiIFMReal
+        {
+            public ushort SP1SSC1UGT = 300;
+            public ushort SP2SSC1UGT = 40;
+            public ushort SP1SSC2UGT = 300;
+            public ushort SP2SSC2UGT = 40;
+
+            public ushort SP1SSC1IF = 3800;
+            public ushort SP2SSC1IF = 388;
+            public ushort SP1SSC2IF = 3800;
+            public ushort SP2SSC2IF = 388;
+
+            public ushort SP1TW2000 = 2500;
+            public ushort rP1TW2000 = 2300;
+
+            public ushort rSLTRB3100 = 1024;
+            public byte cDirRB3100 = 0;
+            public byte OUT_ENCRB = 1;
+
+            public ushort disUGT = 0;
+            public float disIF = 0;
+            public float temTW = 0;
+            public float angleRB = 0;
+            public byte byte65 = 0, byte67 = 0;
+        }
+        public class DataValiPLCToDA
+        {
+
+        }
         private static List<DataItem> dataItemsWritePLCSIM = new List<DataItem>();
         #region DataItemWritePLCSIM
         private static DataItem w0UGTItem = new DataItem()
@@ -263,7 +292,8 @@ namespace DesktopAppDigitalLab
                 ushort idConfig = 0;
                 try
                 {
-                    myPLC.ReadMultipleVars(dataItemsReadPLCSIM);
+                    //myPLC.ReadMultipleVars(dataItemsReadPLCSIM);
+                    await myPLC.ReadMultipleVarsAsync(dataItemsReadPLCSIM);
                     idConfig = (ushort)dataItemsReadPLCSIM[0].Value;
                     DataDAToValiIFMObj.disUGT = (ushort)dataItemsReadPLCSIM[1].Value;
                     DataDAToValiIFMObj.disIF = ((uint)dataItemsReadPLCSIM[2].Value).ConvertToFloat();
@@ -364,6 +394,66 @@ namespace DesktopAppDigitalLab
                 }
             }    
             
+        }
+
+        private async void timerReadPLC_Tick(object sender, EventArgs e)
+        {
+            if (myPLC.IsConnected)
+            {
+                try
+                {
+                    if (myPLC.IsConnected)
+                    {
+                        ushort idConfig = 0;
+                        try
+                        {
+                            await myPLC.ReadMultipleVarsAsync(dataItemsReadPLCSIM);
+                            idConfig = (ushort)dataItemsReadPLCSIM[0].Value;
+                            DataDAToValiIFMObj.disUGT = (ushort)dataItemsReadPLCSIM[1].Value;
+                            DataDAToValiIFMObj.disIF = ((uint)dataItemsReadPLCSIM[2].Value).ConvertToFloat();
+                            DataDAToValiIFMObj.temTW = ((uint)dataItemsReadPLCSIM[3].Value).ConvertToFloat();
+                            DataDAToValiIFMObj.angleRB = ((uint)dataItemsReadPLCSIM[4].Value).ConvertToFloat();
+                            DataDAToValiIFMObj.byte65 = ((byte)dataItemsReadPLCSIM[5].Value);
+                            DataDAToValiIFMObj.byte67 = ((byte)dataItemsReadPLCSIM[6].Value);
+
+                        }
+                        catch (Exception ex3)
+                        {
+                            //MessageBox.Show(ex3.Message);
+                        }
+
+                    }
+                }
+                catch (Exception ex3)
+                {
+                    //MessageBox.Show(ex1.Message);
+                }
+
+            }
+        }
+
+        private async void timerWritePLC_Tick(object sender, EventArgs e)
+        {
+            if (myPLC.IsConnected)
+            {
+                try
+                {
+                    w0UGTItem.Value = (ushort)DataValiIFMToDAObj.w0UGT;
+                    w1UGTItem.Value = (ushort)DataValiIFMToDAObj.w1UGT;
+                    w0IFItem.Value = (ushort)DataValiIFMToDAObj.w0IF;
+                    w0TWItem.Value = (ushort)DataValiIFMToDAObj.w0TW;
+                    w1TWItem.Value = (ushort)DataValiIFMToDAObj.w1TW;
+                    w0RBItem.Value = (ushort)DataValiIFMToDAObj.w0RB;
+                    outKTItem.Value = DataValiIFMToDAObj.outKT;
+                    outO5CItem.Value = DataValiIFMToDAObj.outO5C;
+
+                    await myPLC.WriteAsync(dataItemsWritePLCSIM.ToArray());
+                }
+                catch (Exception ex4)
+                {
+                    //MessageBox.Show(ex4.Message);
+                }
+            }
         }
 
         private void timerMQTT_Tick(object sender, EventArgs e)
@@ -556,6 +646,10 @@ namespace DesktopAppDigitalLab
             picEyeOff.Visible = true;
             picEyeOn.Visible = false;
         }
+
+        
+
+
 
 
 
