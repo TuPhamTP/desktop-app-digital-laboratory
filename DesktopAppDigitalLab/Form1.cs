@@ -30,8 +30,11 @@ namespace DesktopAppDigitalLab
         public DataDAToValiIFM DataDAToValiIFMObj = new DataDAToValiIFM();
         public DataValiIFMToDA DataValiIFMToDAObj = new DataValiIFMToDA();
 
+        //Write PLC
         public DataDAToValiReal DataDAToValiRealObj = new DataDAToValiReal();
-        public DataValiRealToDA DataValiRealToDAObj = new DataValiRealToDA();
+        //Read PLC
+        public DataValueRValiIFMToDA DataValueRValiIFMToDAObj = new DataValueRValiIFMToDA();
+        public DataConfParaRValiIFMToDA DataConfParaRValiIFMToDAObj = new DataConfParaRValiIFMToDA();
 
         public string jsonPublish = "NaN";
 
@@ -71,35 +74,37 @@ namespace DesktopAppDigitalLab
             dataItemsReadPLCSIM.Add(byte67Item);
 
             //Read PLC
-            /*
-            dataItemReadPLC.Add(SP1SSC1UGT);
-            dataItemReadPLC.Add(SP2SSC1UGT);
-            dataItemReadPLC.Add(SP1SSC2UGT);
-            dataItemReadPLC.Add(SP2SSC2UGT);
-            dataItemReadPLC.Add(SP1SSC1IF);
-            dataItemReadPLC.Add(SP2SSC1IF);
-            dataItemReadPLC.Add(SP1SSC2IF);
-            dataItemReadPLC.Add(SP2SSC2IF);
-            dataItemReadPLC.Add(SP1TW2000);
-            dataItemReadPLC.Add(rP1TW2000);
-            dataItemReadPLC.Add(rSLTRB3100);
-            dataItemReadPLC.Add(cDirRB3100);
-            dataItemReadPLC.Add(OUT_ENCRB);
-            */
-            dataItemReadPLC.Add(w0UGT);
-            dataItemReadPLC.Add(w1UGT);
-            
-            dataItemReadPLC.Add(w0IF);
-            dataItemReadPLC.Add(disIF);
-            dataItemReadPLC.Add(w0TW);
-            dataItemReadPLC.Add(w1TW);
-            dataItemReadPLC.Add(temTW);
-            dataItemReadPLC.Add(w0RB);
-            dataItemReadPLC.Add(angleRB);
-            dataItemReadPLC.Add(byte65);
-            dataItemReadPLC.Add(byte67);
-            dataItemReadPLC.Add(byteSwitch);
-            dataItemReadPLC.Add(byteLight);
+            //Read values ValiIFM
+            DataItemReadValueRValiIFM.Add(w0UGT);
+            DataItemReadValueRValiIFM.Add(w1UGT);
+            DataItemReadValueRValiIFM.Add(w0IF);
+            DataItemReadValueRValiIFM.Add(disIF);
+            DataItemReadValueRValiIFM.Add(w0TW);
+            DataItemReadValueRValiIFM.Add(w1TW);
+            DataItemReadValueRValiIFM.Add(temTW);
+            DataItemReadValueRValiIFM.Add(w0RB);
+            DataItemReadValueRValiIFM.Add(angleRB);
+            DataItemReadValueRValiIFM.Add(byte65);
+            DataItemReadValueRValiIFM.Add(byte67);
+            DataItemReadValueRValiIFM.Add(byte68);//
+            DataItemReadValueRValiIFM.Add(byteSwitch);
+            DataItemReadValueRValiIFM.Add(byteLight);
+
+            //Read config parameters ValiIFM
+            DataItemReadConfParaRValiIFM.Add(SP1SSC1UGT);
+            DataItemReadConfParaRValiIFM.Add(SP2SSC1UGT);
+            DataItemReadConfParaRValiIFM.Add(SP1SSC2UGT);
+            DataItemReadConfParaRValiIFM.Add(SP2SSC2UGT);
+            DataItemReadConfParaRValiIFM.Add(SP1SSC1IF);
+            DataItemReadConfParaRValiIFM.Add(SP2SSC1IF);
+            DataItemReadConfParaRValiIFM.Add(SP1SSC2IF);
+            DataItemReadConfParaRValiIFM.Add(SP2SSC2IF);
+            DataItemReadConfParaRValiIFM.Add(SP1TW2000);
+            DataItemReadConfParaRValiIFM.Add(rP1TW2000);
+            DataItemReadConfParaRValiIFM.Add(rSLTRB3100);
+            DataItemReadConfParaRValiIFM.Add(cDirRB3100);
+            DataItemReadConfParaRValiIFM.Add(OUT_ENCRB);
+            //*/
             //Write PLC */
 
         }
@@ -137,28 +142,11 @@ namespace DesktopAppDigitalLab
 
         }
 
-        public class DataValiRealToDA
-        {/*
-            public ushort SP1SSC1UGT = 300;
-            public ushort SP2SSC1UGT = 40;
-            public ushort SP1SSC2UGT = 300;
-            public ushort SP2SSC2UGT = 40;
-
-            public ushort SP1SSC1IF = 3800;
-            public ushort SP2SSC1IF = 388;
-            public ushort SP1SSC2IF = 3800;
-            public ushort SP2SSC2IF = 388;
-
-            public ushort SP1TW2000 = 2500;
-            public ushort rP1TW2000 = 2300;
-
-            public ushort rSLTRB3100 = 1024;
-            public byte cDirRB3100 = 0;
-            public byte OUT_ENCRB = 1;  */
-
+        public class DataValueRValiIFMToDA
+        {
+            public  byte id = 1;
             public ushort w0UGT = 0;
             public ushort w1UGT = 0;
-            
             public ushort w0IF = 0;
             public float disIF = 0;
             public ushort w0TW = 0;
@@ -166,8 +154,35 @@ namespace DesktopAppDigitalLab
             public float temTW = 0;
             public ushort w0RB = 0;
             public float angleRB = 0;
-            public byte byte65 = 0, byte67 = 5, byteSwitch = 0, byteLight = 0; //Read O5C5OO, KT5112  */
+            public byte byte65 = 0, byte67 = 5, byte68 = 0,byteSwitch = 0, byteLight = 0;
+
             //Analog input/output 
+        }
+        public class DataConfParaRValiIFMToDA
+        {
+            public byte id = 2;
+            public ushort SP1SSC1UGT = 300;
+            public ushort SP2SSC1UGT = 40;
+            public ushort SP1SSC2UGT = 300;
+            public ushort SP2SSC2UGT = 40;
+            public ushort SP1SSC1IF = 3800;
+            public ushort SP2SSC1IF = 388;
+            public ushort SP1SSC2IF = 3800;
+            public ushort SP2SSC2IF = 388;
+            public ushort SP1TW2000 = 2500;
+            public ushort rP1TW2000 = 2300;
+            public ushort rSLTRB3100 = 1024;
+            public byte cDirRB3100 = 0;
+            public byte OUT_ENCRB = 1;
+            //*/
+        }
+        public class DataRValiPLCToDA
+        {
+            public byte id = 3;
+            public byte DI = 0, DO = 0;
+            public ushort AI = 0, AO = 0;
+            public float velSP = 0, vel = 0, posSP = 0, pos = 0;
+
         }
         public class DataDAToValiReal
         {
@@ -177,7 +192,9 @@ namespace DesktopAppDigitalLab
 
         private static List<DataItem> dataItemsWritePLCSIM = new List<DataItem>();
 
-        private static List<DataItem> dataItemReadPLC = new List<DataItem>();
+        //private static List<DataItem> dataItemReadPLC = new List<DataItem>();
+        private static List<DataItem> DataItemReadValueRValiIFM = new List<DataItem>();
+        private static List<DataItem> DataItemReadConfParaRValiIFM = new List<DataItem>();
         private static List<DataItem> dataItemWritePLC = new List<DataItem>();
 
         #region DataItemWritePLCSIM
@@ -342,6 +359,8 @@ namespace DesktopAppDigitalLab
         #endregion
 
         #region DataItemReadPLC
+
+            #region ConfigParaRValiIFM
         private static DataItem SP1SSC1UGT = new DataItem()
         {
             DataType = DataType.DataBlock,
@@ -472,6 +491,9 @@ namespace DesktopAppDigitalLab
             StartByteAdr = 23,
             Value = new object()
         };
+        #endregion
+
+            #region ValueRValiIFM
         private static DataItem w0UGT = new DataItem()
         {
             DataType = DataType.Input,
@@ -582,6 +604,16 @@ namespace DesktopAppDigitalLab
             StartByteAdr = 67,
             Value = new object()
         };
+        private static DataItem byte68 = new DataItem()
+        {
+            DataType = DataType.Input,
+            VarType = VarType.Byte,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 68,
+            Value = new object()
+        };
         private static DataItem byteSwitch = new DataItem()
         {
             DataType = DataType.Input,
@@ -602,6 +634,7 @@ namespace DesktopAppDigitalLab
             StartByteAdr = 0,
             Value = new object()
         };
+        #endregion
 
         #endregion
         //Timer
@@ -717,7 +750,7 @@ namespace DesktopAppDigitalLab
             
         }
 
-        private void timerReadPLC_Tick(object sender, EventArgs e)
+        private async void timerReadPLC_Tick(object sender, EventArgs e)
         {
             
             if (myPLC.IsConnected)
@@ -725,49 +758,41 @@ namespace DesktopAppDigitalLab
                
                 try
                 {
-                    //await myPLC.ReadMultipleVarsAsync(dataItemReadPLC);
                     textBox1.Text = "Debug2";
-                    myPLC.ReadMultipleVars(dataItemReadPLC);
-                    /*
-                    DataValiRealToDAObj.SP1SSC1UGT = (ushort)dataItemReadPLC[0].Value;
-                    DataValiRealToDAObj.SP2SSC1UGT = (ushort)dataItemReadPLC[1].Value;
-                    DataValiRealToDAObj.SP1SSC2UGT = (ushort)dataItemReadPLC[2].Value;
-                    DataValiRealToDAObj.SP2SSC2UGT = (ushort)dataItemReadPLC[3].Value;
+                    await myPLC.ReadMultipleVarsAsync(DataItemReadValueRValiIFM);
+                    await myPLC.ReadMultipleVarsAsync(DataItemReadConfParaRValiIFM);
 
-                    DataValiRealToDAObj.SP1SSC1IF = (ushort)dataItemReadPLC[4].Value;
-                    DataValiRealToDAObj.SP2SSC1IF = (ushort)dataItemReadPLC[5].Value;
-                    DataValiRealToDAObj.SP1SSC2IF = (ushort)dataItemReadPLC[6].Value;
-                    DataValiRealToDAObj.SP2SSC2IF = (ushort)dataItemReadPLC[7].Value;
-
-                    DataValiRealToDAObj.SP1TW2000 = (ushort)dataItemReadPLC[8].Value;
-                    DataValiRealToDAObj.rP1TW2000 = (ushort)dataItemReadPLC[9].Value;
-
-                    DataValiRealToDAObj.rSLTRB3100 = (ushort)dataItemReadPLC[10].Value;
-                    DataValiRealToDAObj.cDirRB3100 = (byte)dataItemReadPLC[11].Value;
-                    DataValiRealToDAObj.OUT_ENCRB = (byte)dataItemReadPLC[12].Value; */
-
-                    DataValiRealToDAObj.w0UGT = (ushort)dataItemReadPLC[0].Value;
-                    DataValiRealToDAObj.w1UGT = (ushort)dataItemReadPLC[1].Value;
-
-                    //DataValiRealToDAObj.w0UGT = ((ushort)myPLC.Read("IW93"));
-                    //DataValiRealToDAObj.w1UGT = ((ushort)myPLC.Read("IW94"));
+                    DataValueRValiIFMToDAObj.w0UGT = (ushort)DataItemReadValueRValiIFM[0].Value;
+                    DataValueRValiIFMToDAObj.w1UGT = (ushort)DataItemReadValueRValiIFM[1].Value;
+                    DataValueRValiIFMToDAObj.w0IF = (ushort)DataItemReadValueRValiIFM[2].Value;
+                    DataValueRValiIFMToDAObj.disIF = ((uint)DataItemReadValueRValiIFM[3].Value).ConvertToFloat();
+                    DataValueRValiIFMToDAObj.w0TW = (ushort)DataItemReadValueRValiIFM[4].Value;
+                    DataValueRValiIFMToDAObj.w1TW = (ushort)DataItemReadValueRValiIFM[5].Value;
+                    DataValueRValiIFMToDAObj.temTW = ((uint)DataItemReadValueRValiIFM[6].Value).ConvertToFloat();
+                    DataValueRValiIFMToDAObj.w0RB = (ushort)DataItemReadValueRValiIFM[7].Value;
+                    DataValueRValiIFMToDAObj.angleRB = ((uint)DataItemReadValueRValiIFM[8].Value).ConvertToFloat();
+                    DataValueRValiIFMToDAObj.byte65 = (byte)DataItemReadValueRValiIFM[9].Value;
+                    DataValueRValiIFMToDAObj.byte67 = (byte)DataItemReadValueRValiIFM[10].Value;
+                    DataValueRValiIFMToDAObj.byte67 = (byte)DataItemReadValueRValiIFM[11].Value;
+                    DataValueRValiIFMToDAObj.byteSwitch = (byte)DataItemReadValueRValiIFM[12].Value;
+                    DataValueRValiIFMToDAObj.byteLight = (byte)DataItemReadValueRValiIFM[13].Value;    
+                    //Lệnh Read n' biến chỉ đọc được thêm khoảng 3 Word nữa, nhiều hơn sẽ báo lỗi
 
                     
-                    DataValiRealToDAObj.w0IF = (ushort)dataItemReadPLC[2].Value;
-                    DataValiRealToDAObj.disIF = ((uint)dataItemReadPLC[3].Value).ConvertToFloat();
-                    DataValiRealToDAObj.w0TW = (ushort)dataItemReadPLC[4].Value;
-                    DataValiRealToDAObj.w1TW = (ushort)dataItemReadPLC[5].Value;
-                    DataValiRealToDAObj.temTW = ((uint)dataItemReadPLC[6].Value).ConvertToFloat();
-                    //DataValiRealToDAObj.temTW = ((uint)myPLC.Read("DB1000.DBD32")).ConvertToFloat();
-                    //textBox1.Text = "Debug";
-                    DataValiRealToDAObj.w0RB = (ushort)dataItemReadPLC[7].Value;
-                    DataValiRealToDAObj.angleRB = ((uint)dataItemReadPLC[8].Value).ConvertToFloat();
-                    DataValiRealToDAObj.byte65 = (byte)dataItemReadPLC[9].Value;
-                    DataValiRealToDAObj.byte67 = (byte)dataItemReadPLC[10].Value;
-                    //DataValiRealToDAObj.byte67 = (byte)3;
-                    DataValiRealToDAObj.byteSwitch = (byte)dataItemReadPLC[11].Value;
-                    DataValiRealToDAObj.byteLight = (byte)dataItemReadPLC[12].Value; 
-
+                    DataConfParaRValiIFMToDAObj.SP1SSC1UGT = (ushort)DataItemReadConfParaRValiIFM[0].Value;
+                    DataConfParaRValiIFMToDAObj.SP2SSC1UGT = (ushort)DataItemReadConfParaRValiIFM[1].Value;
+                    DataConfParaRValiIFMToDAObj.SP1SSC2UGT = (ushort)DataItemReadConfParaRValiIFM[2].Value;
+                    DataConfParaRValiIFMToDAObj.SP2SSC2UGT = (ushort)DataItemReadConfParaRValiIFM[3].Value;
+                    DataConfParaRValiIFMToDAObj.SP1SSC1IF = (ushort)DataItemReadConfParaRValiIFM[4].Value;
+                    DataConfParaRValiIFMToDAObj.SP2SSC1IF = (ushort)DataItemReadConfParaRValiIFM[5].Value;
+                    DataConfParaRValiIFMToDAObj.SP1SSC2IF = (ushort)DataItemReadConfParaRValiIFM[6].Value;
+                    DataConfParaRValiIFMToDAObj.SP2SSC2IF = (ushort)DataItemReadConfParaRValiIFM[7].Value;
+                    DataConfParaRValiIFMToDAObj.SP1TW2000 = (ushort)DataItemReadConfParaRValiIFM[8].Value;
+                    DataConfParaRValiIFMToDAObj.rP1TW2000 = (ushort)DataItemReadConfParaRValiIFM[9].Value;
+                    DataConfParaRValiIFMToDAObj.rSLTRB3100 = (ushort)DataItemReadConfParaRValiIFM[10].Value;
+                    DataConfParaRValiIFMToDAObj.cDirRB3100 = (byte)DataItemReadConfParaRValiIFM[11].Value;
+                    DataConfParaRValiIFMToDAObj.OUT_ENCRB = (byte)DataItemReadConfParaRValiIFM[12].Value; 
+                    
                 }
                 catch (Exception ex3)
                 {
@@ -804,20 +829,27 @@ namespace DesktopAppDigitalLab
 
         private void timerMQTT_Tick(object sender, EventArgs e)
         {
-            if (clickBtnPLCSIM == true)
+            if (desktopAppClient.IsConnected)
             {
-                jsonPublish = JsonConvert.SerializeObject(DataDAToValiIFMObj);
+                if (clickBtnPLCSIM == true)
+                {
+                    jsonPublish = JsonConvert.SerializeObject(DataDAToValiIFMObj);
+                }
+                else if (clickBtnPLC == true)
+                {
+                    jsonPublish = JsonConvert.SerializeObject(DataValueRValiIFMToDAObj);
+                    desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+                    jsonPublish = JsonConvert.SerializeObject(DataConfParaRValiIFMToDAObj);
+                    desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+                }
             }    
-            else if (clickBtnPLC == true)
-            {
-                jsonPublish = JsonConvert.SerializeObject(DataValiRealToDAObj);
-            }    
+                
             
 
 
             if (desktopAppClient.IsConnected)
             {
-                desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+                //desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 
                 if (msgValiIFMToDA != null)
                 {

@@ -695,7 +695,7 @@ namespace DesktopAppDigitalLab
             // 
             // timerReadPLC
             // 
-            this.timerReadPLC.Interval = 200;
+            this.timerReadPLC.Interval = 150;
             this.timerReadPLC.Tick += new System.EventHandler(this.timerReadPLC_Tick);
             // 
             // timerWritePLC
