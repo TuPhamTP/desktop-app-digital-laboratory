@@ -82,6 +82,7 @@ namespace DesktopAppDigitalLab
             this.txtIPPC = new System.Windows.Forms.TextBox();
             this.timerReadPLC = new System.Windows.Forms.Timer(this.components);
             this.timerWritePLC = new System.Windows.Forms.Timer(this.components);
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picEyeOff)).BeginInit();
@@ -694,11 +695,24 @@ namespace DesktopAppDigitalLab
             // 
             // timerReadPLC
             // 
+            this.timerReadPLC.Interval = 200;
             this.timerReadPLC.Tick += new System.EventHandler(this.timerReadPLC_Tick);
             // 
             // timerWritePLC
             // 
             this.timerWritePLC.Tick += new System.EventHandler(this.timerWritePLC_Tick);
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(28)))), ((int)(((byte)(31)))));
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Roboto Black", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.ForeColor = System.Drawing.Color.Gainsboro;
+            this.textBox1.Location = new System.Drawing.Point(750, 561);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(145, 28);
+            this.textBox1.TabIndex = 9;
+            this.textBox1.Text = "TEST1";
             // 
             // Form1
             // 
@@ -707,6 +721,7 @@ namespace DesktopAppDigitalLab
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(1258, 669);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
@@ -736,6 +751,7 @@ namespace DesktopAppDigitalLab
             ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCSIMOFF)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectPLCSIMON)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -791,6 +807,7 @@ namespace DesktopAppDigitalLab
         private System.Windows.Forms.PictureBox picEyeOff;
         private System.Windows.Forms.Timer timerReadPLC;
         private System.Windows.Forms.Timer timerWritePLC;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
