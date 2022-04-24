@@ -86,9 +86,9 @@ namespace DesktopAppDigitalLab
             DataItemReadValueRValiIFM.Add(angleRB);
             DataItemReadValueRValiIFM.Add(byte65);
             DataItemReadValueRValiIFM.Add(byte67);
-            DataItemReadValueRValiIFM.Add(byte68);//
+            DataItemReadValueRValiIFM.Add(byte68);/*//
             DataItemReadValueRValiIFM.Add(byteSwitch);
-            DataItemReadValueRValiIFM.Add(byteLight);
+            DataItemReadValueRValiIFM.Add(byteLight); */
 
             //Read config parameters ValiIFM
             DataItemReadConfParaRValiIFM.Add(SP1SSC1UGT);
@@ -154,7 +154,7 @@ namespace DesktopAppDigitalLab
             public float temTW = 0;
             public ushort w0RB = 0;
             public float angleRB = 0;
-            public byte byte65 = 0, byte67 = 5, byte68 = 0,byteSwitch = 0, byteLight = 0;
+            public byte byte65 = 0, byte67 = 5, byte68 = 0;//,byteSwitch = 0, byteLight = 0;
 
             //Analog input/output 
         }
@@ -614,6 +614,7 @@ namespace DesktopAppDigitalLab
             StartByteAdr = 68,
             Value = new object()
         };
+        /*
         private static DataItem byteSwitch = new DataItem()
         {
             DataType = DataType.Input,
@@ -633,7 +634,7 @@ namespace DesktopAppDigitalLab
             Count = 1,
             StartByteAdr = 0,
             Value = new object()
-        };
+        };  */
         #endregion
 
         #endregion
@@ -758,7 +759,7 @@ namespace DesktopAppDigitalLab
                
                 try
                 {
-                    textBox1.Text = "Debug2";
+                    textBox1.Text = "Read OK";
                     await myPLC.ReadMultipleVarsAsync(DataItemReadValueRValiIFM);
                     await myPLC.ReadMultipleVarsAsync(DataItemReadConfParaRValiIFM);
 
@@ -773,9 +774,9 @@ namespace DesktopAppDigitalLab
                     DataValueRValiIFMToDAObj.angleRB = ((uint)DataItemReadValueRValiIFM[8].Value).ConvertToFloat();
                     DataValueRValiIFMToDAObj.byte65 = (byte)DataItemReadValueRValiIFM[9].Value;
                     DataValueRValiIFMToDAObj.byte67 = (byte)DataItemReadValueRValiIFM[10].Value;
-                    DataValueRValiIFMToDAObj.byte67 = (byte)DataItemReadValueRValiIFM[11].Value;
+                    DataValueRValiIFMToDAObj.byte67 = (byte)DataItemReadValueRValiIFM[11].Value;    /*
                     DataValueRValiIFMToDAObj.byteSwitch = (byte)DataItemReadValueRValiIFM[12].Value;
-                    DataValueRValiIFMToDAObj.byteLight = (byte)DataItemReadValueRValiIFM[13].Value;    
+                    DataValueRValiIFMToDAObj.byteLight = (byte)DataItemReadValueRValiIFM[13].Value;    */
                     //Lệnh Read n' biến chỉ đọc được thêm khoảng 3 Word nữa, nhiều hơn sẽ báo lỗi
 
                     
@@ -797,7 +798,7 @@ namespace DesktopAppDigitalLab
                 catch (Exception ex3)
                 {
                     //MessageBox.Show(ex3.Message);
-                    textBox1.Text = "Loi";
+                    textBox1.Text = "Error!";
                 }
 
             }
