@@ -112,6 +112,7 @@ namespace DesktopAppDigitalLab
         //Class & List Data
         public class DataDAToValiIFM
         {
+            public byte idV1;
             public ushort SP1SSC1UGT = 300;
             public ushort SP2SSC1UGT = 40;
             public ushort SP1SSC2UGT = 300;
@@ -144,41 +145,41 @@ namespace DesktopAppDigitalLab
 
         public class DataValueRValiIFMToDA
         {
-            public  byte id = 1;
-            public ushort w0UGT = 0;
-            public ushort w1UGT = 0;
-            public ushort w0IF = 0;
-            public float disIF = 0;
-            public ushort w0TW = 0;
-            public ushort w1TW = 0;
-            public float temTW = 0;
-            public ushort w0RB = 0;
-            public float angleRB = 0;
-            public byte byte65 = 0, byte67 = 5, byte68 = 0;//,byteSwitch = 0, byteLight = 0;
+            public  byte idR1;
+            public ushort w0UGT;
+            public ushort w1UGT;
+            public ushort w0IF;
+            public float disIF;
+            public ushort w0TW;
+            public ushort w1TW;
+            public float temTW;
+            public ushort w0RB;
+            public float angleRB;
+            public byte byte65, byte67, byte68;//,byteSwitch = 0, byteLight = 0;
 
             //Analog input/output 
         }
         public class DataConfParaRValiIFMToDA
         {
-            public byte id = 2;
-            public ushort SP1SSC1UGT = 300;
-            public ushort SP2SSC1UGT = 40;
-            public ushort SP1SSC2UGT = 300;
-            public ushort SP2SSC2UGT = 40;
-            public ushort SP1SSC1IF = 3800;
-            public ushort SP2SSC1IF = 388;
-            public ushort SP1SSC2IF = 3800;
-            public ushort SP2SSC2IF = 388;
-            public ushort SP1TW2000 = 2500;
-            public ushort rP1TW2000 = 2300;
-            public ushort rSLTRB3100 = 1024;
-            public byte cDirRB3100 = 0;
-            public byte OUT_ENCRB = 1;
+            public byte idR2;
+            public ushort SP1SSC1UGT;
+            public ushort SP2SSC1UGT;
+            public ushort SP1SSC2UGT;
+            public ushort SP2SSC2UGT;
+            public ushort SP1SSC1IF;
+            public ushort SP2SSC1IF;
+            public ushort SP1SSC2IF;
+            public ushort SP2SSC2IF;
+            public ushort SP1TW2000;
+            public ushort rP1TW2000;
+            public ushort rSLTRB3100;
+            public byte cDirRB3100 = 2;
+            public byte OUT_ENCRB = 2;
             //*/
         }
         public class DataRValiPLCToDA
         {
-            public byte id = 3;
+            public byte idR3;
             public byte DI = 0, DO = 0;
             public ushort AI = 0, AO = 0;
             public float velSP = 0, vel = 0, posSP = 0, pos = 0;
@@ -586,7 +587,7 @@ namespace DesktopAppDigitalLab
         };
         private static DataItem byte65 = new DataItem()
         {
-            DataType = DataType.Input,
+            DataType = DataType.Output,
             VarType = VarType.Byte,
             DB = 0,
             BitAdr = 0,
@@ -596,7 +597,7 @@ namespace DesktopAppDigitalLab
         };
         private static DataItem byte67 = new DataItem()
         {
-            DataType = DataType.Input,
+            DataType = DataType.Output,
             VarType = VarType.Byte,
             DB = 0,
             BitAdr = 0,
@@ -774,7 +775,7 @@ namespace DesktopAppDigitalLab
                     DataValueRValiIFMToDAObj.angleRB = ((uint)DataItemReadValueRValiIFM[8].Value).ConvertToFloat();
                     DataValueRValiIFMToDAObj.byte65 = (byte)DataItemReadValueRValiIFM[9].Value;
                     DataValueRValiIFMToDAObj.byte67 = (byte)DataItemReadValueRValiIFM[10].Value;
-                    DataValueRValiIFMToDAObj.byte67 = (byte)DataItemReadValueRValiIFM[11].Value;    /*
+                    DataValueRValiIFMToDAObj.byte68 = (byte)DataItemReadValueRValiIFM[11].Value;    /*
                     DataValueRValiIFMToDAObj.byteSwitch = (byte)DataItemReadValueRValiIFM[12].Value;
                     DataValueRValiIFMToDAObj.byteLight = (byte)DataItemReadValueRValiIFM[13].Value;    */
                     //Lệnh Read n' biến chỉ đọc được thêm khoảng 3 Word nữa, nhiều hơn sẽ báo lỗi
@@ -840,6 +841,7 @@ namespace DesktopAppDigitalLab
                 {
                     jsonPublish = JsonConvert.SerializeObject(DataValueRValiIFMToDAObj);
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+                    //Thread.Sleep(20);
                     jsonPublish = JsonConvert.SerializeObject(DataConfParaRValiIFMToDAObj);
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
                 }
@@ -995,7 +997,8 @@ namespace DesktopAppDigitalLab
                 if (desktopAppClient.IsConnected)
                 {
                     desktopAppClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
-                    desktopAppClient.Subscribe(new string[] { topicValiIFMtoDA }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+                    //desktopAppClient.Subscribe(new string[] { topicValiIFMtoDA }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+                    SubscribeTopic();
                     clickBtnBroker = true;
                     lblNotifyConnectBroker.Text = "   Kết nối thành công!";
                     picConnectBrokerON.Visible = true;
@@ -1022,6 +1025,7 @@ namespace DesktopAppDigitalLab
             lblID.Text = strID;
             topicDAToValiIFM = "DAToValiIFM: ID = " + txtID.Text;
             topicValiIFMtoDA = "ValiIFMToDA: ID = " + txtID.Text;
+            SubscribeTopic();
         }
 
         private void picEyeOff_Click(object sender, EventArgs e)
@@ -1038,7 +1042,10 @@ namespace DesktopAppDigitalLab
             picEyeOn.Visible = false;
         }
 
-        
+        public void SubscribeTopic()
+        {
+            desktopAppClient.Subscribe(new string[] { topicValiIFMtoDA }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+        }
 
 
 
