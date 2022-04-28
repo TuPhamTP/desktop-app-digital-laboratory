@@ -106,7 +106,7 @@ namespace DesktopAppDigitalLab
             DataItemReadConfParaRValiIFM.Add(OUT_ENCRB);
             //*/
             //Write PLC */
-
+            
         }
 
         //Class & List Data
@@ -760,7 +760,7 @@ namespace DesktopAppDigitalLab
                
                 try
                 {
-                    textBox1.Text = "Read OK";
+                    //textBox1.Text = "Read OK";
                     await myPLC.ReadMultipleVarsAsync(DataItemReadValueRValiIFM);
                     await myPLC.ReadMultipleVarsAsync(DataItemReadConfParaRValiIFM);
 
@@ -799,7 +799,7 @@ namespace DesktopAppDigitalLab
                 catch (Exception ex3)
                 {
                     //MessageBox.Show(ex3.Message);
-                    textBox1.Text = "Error!";
+                    //textBox1.Text = "Error!";
                 }
 
             }
@@ -856,7 +856,7 @@ namespace DesktopAppDigitalLab
 
                 if (msgValiIFMToDA != null)
                 {
-                    DataValiIFMToDAObj = Newtonsoft.Json.JsonConvert.DeserializeObject<DataValiIFMToDA>(msgValiIFMToDA);
+                    DataValiIFMToDAObj = JsonConvert.DeserializeObject<DataValiIFMToDA>(msgValiIFMToDA);
                 }    
                 
             }
