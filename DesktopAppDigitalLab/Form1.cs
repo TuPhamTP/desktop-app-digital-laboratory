@@ -22,20 +22,20 @@ namespace DesktopAppDigitalLab
         public MqttClient desktopAppClient;
         public Plc myPLC;
         public string strID, strIPPC, strIPPLC, strBrokerAddress, strPort, strUsername, strPassword;
-        public string msgValiIFMToDA;
+        public string jsonSubscribe;
+        public string jsonPublish = "NaN";
         public string topicValiIFMtoDA, topicDAToValiIFM;
         public bool clickBtnBroker, clickBtnPLCSIM, clickBtnPLC;
         public int flagPLCSIM, flagPLC;
-        public string jsonPublish = "NaN";
 
         public DataDAToValiIFM DataDAToValiIFMObj = new DataDAToValiIFM();
-        public DataDAtoValiPLC DataDAtoValiPLCObj = new DataDAtoValiPLC();
+        public DataDAToValiPLC DataDAToValiPLCObj = new DataDAToValiPLC();
         //
         public DataValiIFMToDA DataValiIFMToDAObj = new DataValiIFMToDA();
         public DataValiPLCToDA DataValiPLCToDAObj = new DataValiPLCToDA();
         //
         
-        //public DataRValiPLCToDA DataDAToValiRealObj = new DataRValiPLCToDA();
+
         public DataValueDAToRValiIFM DataValueDAToRValiIFMObj = new DataValueDAToRValiIFM();
         public DataConfParaDAToRValiIFM DataConfParaDAToRValiIFMObj = new DataConfParaDAToRValiIFM();
         //
@@ -155,7 +155,7 @@ namespace DesktopAppDigitalLab
             public float angleRB;
             public byte byte65, byte67;
         }
-        public class DataDAtoValiPLC    //PLCSIM --> DA --> ValiPLC ảo
+        public class DataDAToValiPLC    //PLCSIM --> DA --> ValiPLC ảo
         {
             public byte idV2;
             public byte DI, DO;
@@ -179,7 +179,7 @@ namespace DesktopAppDigitalLab
         }
         //
         //----------------------------------------------------------------------
-        public class DataValueDAToRValiIFM      //DataValueRValiIFMToDA
+        public class DataValueDAToRValiIFM      //Giá trị cảm biến từ ValiIFM thật --> DA --> AR cho ValiIFM thật
         {
             public  byte idR1;
             public ushort w0UGT;
@@ -193,7 +193,7 @@ namespace DesktopAppDigitalLab
             public float angleRB;
             public byte byte65, byte67, byte68;
         }
-        public class DataConfParaDAToRValiIFM   //  DataConfParaRValiIFMToDA
+        public class DataConfParaDAToRValiIFM   //Cấu hình cảm biến từ ValiIFM thật --> DA --> AR cho ValiIFM thật
         {
             public byte idR2;
             public ushort SP1SSC1UGT;
@@ -743,7 +743,6 @@ namespace DesktopAppDigitalLab
                     DataDAToValiIFMObj.angleRB = ((uint)DataItemsReadPLCSIMValiIFM[4].Value).ConvertToFloat();
                     DataDAToValiIFMObj.byte65 = ((byte)DataItemsReadPLCSIMValiIFM[5].Value);
                     DataDAToValiIFMObj.byte67 = ((byte)DataItemsReadPLCSIMValiIFM[6].Value);
-                    //idConfig = ((ushort)await myPLC.ReadAsync("DB1000.DBW24"));
                     #region IDCONFIG
                     if (idConfig == 1)
                     {
@@ -800,8 +799,8 @@ namespace DesktopAppDigitalLab
                     }
                     #endregion
                     await myPLC.ReadMultipleVarsAsync(DataItemsReadPLCSIMValiPLC);
-                    DataDAtoValiPLCObj.DO = (byte)DataItemsReadPLCSIMValiPLC[0].Value;
-                    DataDAtoValiPLCObj.AO = (byte)DataItemsReadPLCSIMValiPLC[1].Value;
+                    DataDAToValiPLCObj.DO = (byte)DataItemsReadPLCSIMValiPLC[0].Value;
+                    DataDAToValiPLCObj.AO = (byte)DataItemsReadPLCSIMValiPLC[1].Value;
 
                 }
                 catch (Exception ex1)
@@ -930,7 +929,12 @@ namespace DesktopAppDigitalLab
             {
                 if (clickBtnPLCSIM == true)
                 {
-                    jsonPublish = JsonConvert.SerializeObject(DataDAToValiIFMObj);
+                    jsonPublish = JsonConvert.SerializeObject(DataDAToValiIFMObj); 
+                    desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+
+                    jsonPublish = JsonConvert.SerializeObject(DataDAToValiPLCObj);
+                    desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+
                 }
                 else if (clickBtnPLC == true)
                 {
@@ -938,6 +942,9 @@ namespace DesktopAppDigitalLab
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
                     //Thread.Sleep(20);
                     jsonPublish = JsonConvert.SerializeObject(DataConfParaDAToRValiIFMObj);
+                    desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+
+                    jsonPublish = JsonConvert.SerializeObject(DataDAToRValiPLCObj);
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
                 }
             }    
@@ -947,11 +954,18 @@ namespace DesktopAppDigitalLab
 
             if (desktopAppClient.IsConnected)
             {
-                //desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-
-                if (msgValiIFMToDA != null)
+                if (jsonSubscribe != null)
                 {
-                    DataValiIFMToDAObj = JsonConvert.DeserializeObject<DataValiIFMToDA>(msgValiIFMToDA);
+                    if (jsonSubscribe.Contains("idV4"))
+                    {
+                        DataValiIFMToDAObj = JsonConvert.DeserializeObject<DataValiIFMToDA>(jsonSubscribe);
+                    }    
+                    else if (jsonSubscribe.Contains("idV5"))
+                    {
+                        DataValiPLCToDAObj = JsonConvert.DeserializeObject<DataValiPLCToDA>(jsonSubscribe);
+                    }   
+                      
+                    //Chưa có truyền từ AR App xuống Vali thật
                 }    
                 
             }
@@ -1137,21 +1151,19 @@ namespace DesktopAppDigitalLab
             picEyeOn.Visible = false;
         }
 
+        
+
+        //Function
+        private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        {
+            jsonSubscribe = Encoding.UTF8.GetString(e.Message);
+        }
+
         public void SubscribeTopic()
         {
             desktopAppClient.Subscribe(new string[] { topicValiIFMtoDA }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
         }
 
-
-
-
-
-        //Function
-        private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
-        {
-            msgValiIFMToDA = Encoding.UTF8.GetString(e.Message);
-        }
-        
         private string GetIPAddress()
         {
             string IPAddress = string.Empty;
