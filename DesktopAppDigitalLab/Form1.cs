@@ -441,7 +441,7 @@ namespace DesktopAppDigitalLab
             DB = 0,
             BitAdr = 0,
             Count = 1,
-            StartByteAdr = 64,
+            StartByteAdr = 80,
             Value = new object()
         };
         #endregion
@@ -800,7 +800,7 @@ namespace DesktopAppDigitalLab
                     #endregion
                     await myPLC.ReadMultipleVarsAsync(DataItemsReadPLCSIMValiPLC);
                     DataDAToValiPLCObj.DO = (byte)DataItemsReadPLCSIMValiPLC[0].Value;
-                    DataDAToValiPLCObj.AO = (byte)DataItemsReadPLCSIMValiPLC[1].Value;
+                    DataDAToValiPLCObj.AO = (ushort)DataItemsReadPLCSIMValiPLC[1].Value;
 
                 }
                 catch (Exception ex1)
@@ -887,7 +887,7 @@ namespace DesktopAppDigitalLab
 
 
                     DataDAToRValiPLCObj.DO = (byte)DataItemReadPLCValiPLC[0].Value;
-                    DataDAToRValiPLCObj.AO = (byte)DataItemReadPLCValiPLC[1].Value;
+                    DataDAToRValiPLCObj.AO = (ushort)DataItemReadPLCValiPLC[1].Value;
                 }
                 catch (Exception ex3)
                 {
