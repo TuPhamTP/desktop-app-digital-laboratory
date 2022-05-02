@@ -57,8 +57,8 @@ namespace DesktopAppDigitalLab
             txtPassword.Text = "passwordmqtt2";
             txtID.Text = "0";
 
-            topicDAToValiIFM = "DAToValiIFM: ID = " + txtID.Text;
-            topicValiIFMtoDA = "ValiIFMToDA: ID = " + txtID.Text;
+            topicDAToValiIFM = "DAToARApp: ID = " + txtID.Text;
+            topicValiIFMtoDA = "ARAppToDA: ID = " + txtID.Text;
             timerConnect.Start();
 
             //-------------------------------------------------------------Write PLCSIM
@@ -119,7 +119,9 @@ namespace DesktopAppDigitalLab
             DataItemReadPLCConfParaRValiIFM.Add(OUT_ENCRB);
 
             //Read value ValiPLC
+            DataItemReadPLCValiPLC.Add(realDI);
             DataItemReadPLCValiPLC.Add(realDO);
+            DataItemReadPLCValiPLC.Add(realAI);
             DataItemReadPLCValiPLC.Add(realAO);
 
             //---------------------------------------------------------------Write PLC
@@ -704,6 +706,16 @@ namespace DesktopAppDigitalLab
         #endregion
 
         #region DataItemReadPLCValiPLC
+        private static DataItem realDI = new DataItem()
+        {
+            DataType = DataType.Input,
+            VarType = VarType.Byte,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 0,
+            Value = new object()
+        };
         private static DataItem realDO = new DataItem()
         {
             DataType = DataType.Output,
@@ -714,9 +726,9 @@ namespace DesktopAppDigitalLab
             StartByteAdr = 0,
             Value = new object()
         };
-        private static DataItem realAO = new DataItem()
+        private static DataItem realAI = new DataItem()
         {
-            DataType = DataType.Output,
+            DataType = DataType.Input,
             VarType = VarType.Word,
             DB = 0,
             BitAdr = 0,
@@ -724,6 +736,17 @@ namespace DesktopAppDigitalLab
             StartByteAdr = 64,
             Value = new object()
         };
+        private static DataItem realAO = new DataItem()
+        {
+            DataType = DataType.Output,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 80,
+            Value = new object()
+        };
+
         #endregion
 
 
@@ -886,8 +909,10 @@ namespace DesktopAppDigitalLab
                     DataConfParaDAToRValiIFMObj.OUT_ENCRB = (byte)DataItemReadPLCConfParaRValiIFM[12].Value;
 
 
-                    DataDAToRValiPLCObj.DO = (byte)DataItemReadPLCValiPLC[0].Value;
-                    DataDAToRValiPLCObj.AO = (ushort)DataItemReadPLCValiPLC[1].Value;
+                    DataDAToRValiPLCObj.DI = (byte)DataItemReadPLCValiPLC[0].Value;
+                    DataDAToRValiPLCObj.DO = (byte)DataItemReadPLCValiPLC[1].Value;
+                    DataDAToRValiPLCObj.AI = (ushort)DataItemReadPLCValiPLC[2].Value;
+                    DataDAToRValiPLCObj.AO = (ushort)DataItemReadPLCValiPLC[3].Value;
                 }
                 catch (Exception ex3)
                 {
@@ -1132,8 +1157,8 @@ namespace DesktopAppDigitalLab
         {
             strID = txtID.Text;
             lblID.Text = strID;
-            topicDAToValiIFM = "DAToValiIFM: ID = " + txtID.Text;
-            topicValiIFMtoDA = "ValiIFMToDA: ID = " + txtID.Text;
+            topicDAToValiIFM = "DAToARApp: ID = " + txtID.Text;
+            topicValiIFMtoDA = "ARAppToDA: ID = " + txtID.Text;
             SubscribeTopic();
         }
 
