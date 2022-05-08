@@ -123,7 +123,12 @@ namespace DesktopAppDigitalLab
             DataItemReadPLCValiPLC.Add(realDO);
             DataItemReadPLCValiPLC.Add(realAI);
             DataItemReadPLCValiPLC.Add(realAO);
-
+            DataItemReadPLCValiPLC.Add(realVelSP);
+            DataItemReadPLCValiPLC.Add(realVel);
+            DataItemReadPLCValiPLC.Add(realPosSP);
+            DataItemReadPLCValiPLC.Add(realPos);
+            DataItemReadPLCValiPLC.Add(realLS1);
+            DataItemReadPLCValiPLC.Add(realLS2);
             //---------------------------------------------------------------Write PLC
 
         }
@@ -217,7 +222,8 @@ namespace DesktopAppDigitalLab
             public byte idR3;
             public byte DI, DO;
             public ushort AI, AO;
-            //public float velSP, vel, posSP, pos;
+            public float velSP, vel, posSP, pos;
+            public bool LS1, LS2;
 
         }
         //
@@ -746,6 +752,67 @@ namespace DesktopAppDigitalLab
             StartByteAdr = 80,
             Value = new object()
         };
+        private static DataItem realVelSP = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Real,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 42,
+            Value = new object()
+        };
+        private static DataItem realVel = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Real,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 46,
+            Value = new object()
+        };
+        private static DataItem realPosSP = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Real,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 54,
+            Value = new object()
+        };
+        private static DataItem realPos = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Real,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 58,
+            Value = new object()
+        };
+        private static DataItem realLS1 = new DataItem()
+        {
+            DataType = DataType.Input,
+            VarType = VarType.Bit,
+            DB = 0,
+            BitAdr = 1,
+            Count = 1,
+            StartByteAdr = 1,
+            Value = new object()
+        };
+        private static DataItem realLS2 = new DataItem()
+        {
+            DataType = DataType.Input,
+            VarType = VarType.Bit,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 1,
+            Value = new object()
+        };
+
 
         #endregion
 
@@ -913,6 +980,12 @@ namespace DesktopAppDigitalLab
                     DataDAToRValiPLCObj.DO = (byte)DataItemReadPLCValiPLC[1].Value;
                     DataDAToRValiPLCObj.AI = (ushort)DataItemReadPLCValiPLC[2].Value;
                     DataDAToRValiPLCObj.AO = (ushort)DataItemReadPLCValiPLC[3].Value;
+                    DataDAToRValiPLCObj.velSP = (float)DataItemReadPLCValiPLC[4].Value;
+                    DataDAToRValiPLCObj.vel = (float)DataItemReadPLCValiPLC[5].Value;
+                    DataDAToRValiPLCObj.posSP = (float)DataItemReadPLCValiPLC[6].Value;
+                    DataDAToRValiPLCObj.pos = (float)DataItemReadPLCValiPLC[7].Value;
+                    DataDAToRValiPLCObj.LS1 = (bool)DataItemReadPLCValiPLC[8].Value;
+                    DataDAToRValiPLCObj.LS2 = (bool)DataItemReadPLCValiPLC[9].Value;
                 }
                 catch (Exception ex3)
                 {
@@ -974,9 +1047,7 @@ namespace DesktopAppDigitalLab
                 }
             }    
                 
-            
-
-
+            /* Phải đưa vào hàm nhận message để nó cập nhật liên tục
             if (desktopAppClient.IsConnected)
             {
                 if (jsonSubscribe != null)
@@ -994,6 +1065,7 @@ namespace DesktopAppDigitalLab
                 }    
                 
             }
+            */
         }
 
         private void timerConnect_Tick(object sender, EventArgs e)
@@ -1182,6 +1254,19 @@ namespace DesktopAppDigitalLab
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             jsonSubscribe = Encoding.UTF8.GetString(e.Message);
+            if (jsonSubscribe != null)
+            {
+                if (jsonSubscribe.Contains("idV4"))
+                {
+                    DataValiIFMToDAObj = JsonConvert.DeserializeObject<DataValiIFMToDA>(jsonSubscribe);
+                }
+                else if (jsonSubscribe.Contains("idV5"))
+                {
+                    DataValiPLCToDAObj = JsonConvert.DeserializeObject<DataValiPLCToDA>(jsonSubscribe);
+                }
+
+                //Chưa có truyền từ AR App xuống Vali thật
+            }
         }
 
         public void SubscribeTopic()
