@@ -27,14 +27,17 @@ namespace DesktopAppDigitalLab
         public string topicValiIFMtoDA, topicDAToValiIFM;
         public bool clickBtnBroker, clickBtnPLCSIM, clickBtnPLC;
         public int flagPLCSIM, flagPLC;
+        public bool writeSPRealValiPLC, writeSPSimulateValiPLC, writeConfig;
 
         public DataDAToValiIFM DataDAToValiIFMObj = new DataDAToValiIFM();
         public DataDAToValiPLC DataDAToValiPLCObj = new DataDAToValiPLC();
         //
         public DataValiIFMToDA DataValiIFMToDAObj = new DataValiIFMToDA();
         public DataValiPLCToDA DataValiPLCToDAObj = new DataValiPLCToDA();
+        public DataSetSPValiPLCToDA DataSetSPValiPLCToDAObj = new DataSetSPValiPLCToDA();
+        public DataButtonReadConfigValiIFM DataButtonReadConfigValiIFMObj = new DataButtonReadConfigValiIFM();
         //
-        
+
 
         public DataValueDAToRValiIFM DataValueDAToRValiIFMObj = new DataValueDAToRValiIFM();
         public DataConfParaDAToRValiIFM DataConfParaDAToRValiIFMObj = new DataConfParaDAToRValiIFM();
@@ -72,7 +75,12 @@ namespace DesktopAppDigitalLab
             DataItemsWritePLCSIMValiIFM.Add(outKTItem);
 
             DataItemsWritePLCSIMValiPLC.Add(DI);
-            DataItemsWritePLCSIMValiPLC.Add(AI); //Xem lại địa chỉ AI
+            DataItemsWritePLCSIMValiPLC.Add(AI);
+            DataItemsWritePLCSIMValiPLC.Add(LS1);
+            DataItemsWritePLCSIMValiPLC.Add(LS2);
+
+            DataSetSPItemWritePLCSIMValiPLC.Add(setPosSP);
+            DataSetSPItemWritePLCSIMValiPLC.Add(setVelSP);
 
 
             //--------------------------------------------------------------Read PLCSIM
@@ -138,7 +146,10 @@ namespace DesktopAppDigitalLab
             DataItemReadPLCValiPLC.Add(realLS1);
             DataItemReadPLCValiPLC.Add(realLS2);
             //---------------------------------------------------------------Write PLC
+            DataItemWritePLCValiPLC.Add(setRealPosSP);
+            DataItemWritePLCValiPLC.Add(setRealVelSP);
 
+            DataItemButtonReadConfigValiIFM.Add(readConfigItem);
         }
 
         //Class
@@ -190,9 +201,17 @@ namespace DesktopAppDigitalLab
             public byte idV5;
             public byte DI;
             public ushort AI;
+            public bool LS1;
+            public bool LS2;
             //Stepper Motor
         }
+        public class DataSetSPValiPLCToDA
+        {
+            public byte idV6;
+            public float siPosSP, siVelSP;
+        }
         //
+        
         //----------------------------------------------------------------------
         public class DataValueDAToRValiIFM      //Giá trị cảm biến từ ValiIFM thật --> DA --> AR cho ValiIFM thật
         {
@@ -238,8 +257,14 @@ namespace DesktopAppDigitalLab
         public class DataRValiPLCToDA
         {
             public byte idR5;
+            public float velSP, posSP;
             //public float velSP = 0, vel = 0, posSP = 0, pos = 0;
 
+        }
+        public class DataButtonReadConfigValiIFM
+        {
+            public byte idR6;
+            public bool readConfig;
         }
         //
         #endregion
@@ -256,7 +281,9 @@ namespace DesktopAppDigitalLab
         private static List<DataItem> DataItemReadPLCValueRValiIFM = new List<DataItem>();
         private static List<DataItem> DataItemReadPLCConfParaRValiIFM = new List<DataItem>();
         private static List<DataItem> DataItemReadPLCValiPLC = new List<DataItem>();
-        private static List<DataItem> DataItemWritePLCValiPLC = new List<DataItem>();   //Chưa dùng
+        private static List<DataItem> DataItemWritePLCValiPLC = new List<DataItem>();
+        private static List<DataItem> DataSetSPItemWritePLCSIMValiPLC = new List<DataItem>();
+        private static List<DataItem> DataItemButtonReadConfigValiIFM = new List<DataItem>();
 
         #region DataItemsWritePLCSIMValiIFM
         private static DataItem w0UGTItem = new DataItem()
@@ -435,8 +462,50 @@ namespace DesktopAppDigitalLab
             Count = 1,
             StartByteAdr = 64,
             Value = new object()
-        };
 
+        };
+        private static DataItem LS1 = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Bit,
+            DB = 0,
+            BitAdr = 1,
+            Count = 1,
+            StartByteAdr = 1,
+            Value = new object()
+        };
+        private static DataItem LS2 = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Bit,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 1,
+            Value = new object()
+        };
+        // //////////////////
+        private static DataItem setPosSP = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Real,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 72,
+            Value = new object()
+        };
+        private static DataItem setVelSP = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Real,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 76,
+            Value = new object()
+        };
+        
         #endregion
 
         #region DataItemsReadPLCSIMValiPLC
@@ -490,6 +559,7 @@ namespace DesktopAppDigitalLab
             StartByteAdr = 72,
             Value = new object()
         };
+        
         private static DataItem pos = new DataItem()
         {
             DataType = DataType.DataBlock,
@@ -894,7 +964,42 @@ namespace DesktopAppDigitalLab
 
         #endregion
 
+        #region DataSetSPItemWritePLCSIMValiPLC
+        private static DataItem setRealPosSP = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Real,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 54,
+            Value = new object()
+        };
+        private static DataItem setRealVelSP = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Real,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 42,
+            Value = new object()
+        };
 
+        #endregion
+
+        #region DataItemButtonReadConfigValiIFM
+        private static DataItem readConfigItem = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Bit,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 40,
+            Value = new object()
+        };
+        #endregion
         //Timer
         private async void timerReadPLCSIM_Tick(object sender, EventArgs e)
         {
@@ -1006,7 +1111,18 @@ namespace DesktopAppDigitalLab
 
                     DI.Value = (byte)DataValiPLCToDAObj.DI;
                     AI.Value = (ushort)DataValiPLCToDAObj.AI;
+                    LS1.Value = (bool)DataValiPLCToDAObj.LS1;
+                    LS2.Value = (bool)DataValiPLCToDAObj.LS2;
                     await myPLC.WriteAsync(DataItemsWritePLCSIMValiPLC.ToArray());
+
+                    
+                    if (writeSPSimulateValiPLC == true)
+                    {
+                        setPosSP.Value = (float)DataSetSPValiPLCToDAObj.siPosSP;//
+                        setVelSP.Value = (float)DataSetSPValiPLCToDAObj.siVelSP;//
+                        await myPLC.WriteAsync(DataSetSPItemWritePLCSIMValiPLC.ToArray());
+                        writeSPSimulateValiPLC = false;
+                    }
                 }
                 catch (Exception ex2)
                 {
@@ -1097,7 +1213,20 @@ namespace DesktopAppDigitalLab
 
                     await myPLC.WriteAsync(DataItemsWritePLCSIMValiIFM.ToArray());
 
-                    //Chưa có Write vào ValiPLC thật
+                    //Write vào ValiPLC thật
+                    if (writeSPRealValiPLC == true)
+                    {
+                        setRealPosSP.Value = (float)DataRValiPLCToDAObj.posSP;
+                        setRealVelSP.Value = (float)DataRValiPLCToDAObj.velSP;
+                        await myPLC.WriteAsync(DataItemWritePLCValiPLC.ToArray());
+                        writeSPRealValiPLC = false;
+                    }    
+                    if (writeConfig == true)
+                    {
+                        readConfigItem.Value = (bool)DataButtonReadConfigValiIFMObj.readConfig;
+                        await myPLC.WriteAsync(DataItemButtonReadConfigValiIFM.ToArray());
+                        writeConfig = false;
+                    }    
                 }
                 catch (Exception ex4)
                 {
@@ -1211,6 +1340,8 @@ namespace DesktopAppDigitalLab
         {
             
                 timerReadPLC.Start();
+                timerWritePLC.Start();
+            
                 if (clickBtnPLC == false)
                 {
                     clickBtnPLC = true;
@@ -1241,6 +1372,7 @@ namespace DesktopAppDigitalLab
                     btnConnectPLC.Text = "KẾT NỐI";
                     myPLC.Close();
                     timerReadPLC.Stop();
+                    timerWritePLC.Stop();
 
                 }
             
@@ -1330,6 +1462,22 @@ namespace DesktopAppDigitalLab
                 {
                     DataValiPLCToDAObj = JsonConvert.DeserializeObject<DataValiPLCToDA>(jsonSubscribe);
                 }
+                else if (jsonSubscribe.Contains("idV6"))
+                {
+                    DataSetSPValiPLCToDAObj = JsonConvert.DeserializeObject<DataSetSPValiPLCToDA>(jsonSubscribe);
+                    writeSPSimulateValiPLC = true;
+                }    
+                else if (jsonSubscribe.Contains("idR5"))
+                {
+                    DataRValiPLCToDAObj = JsonConvert.DeserializeObject<DataRValiPLCToDA>(jsonSubscribe);
+                    writeSPRealValiPLC = true;
+                }
+                else if (jsonSubscribe.Contains("idR6"))
+                {
+                    DataButtonReadConfigValiIFMObj = JsonConvert.DeserializeObject<DataButtonReadConfigValiIFM>(jsonSubscribe);
+                    writeConfig = true;
+                }
+
 
                 //Chưa có truyền từ AR App xuống Vali thật
             }
