@@ -706,7 +706,7 @@ namespace DesktopAppDigitalLab
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(40)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(37)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(1258, 669);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel1);

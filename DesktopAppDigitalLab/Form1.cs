@@ -27,26 +27,28 @@ namespace DesktopAppDigitalLab
         public string topicValiIFMtoDA, topicDAToValiIFM;
         public bool clickBtnBroker, clickBtnPLCSIM, clickBtnPLC;
         public int flagPLCSIM, flagPLC;
-        public bool writeSPRealValiPLC, writeSPSimulateValiPLC, writeConfig;
+        public bool writeSPRealValiPLC, writeSPSimulateValiPLC, writeConfig, writeSPRealInverter, writeOnOffRealInverter;
 
         public DataDAToValiIFM DataDAToValiIFMObj = new DataDAToValiIFM();
         public DataDAToValiPLC DataDAToValiPLCObj = new DataDAToValiPLC();
         //
         public DataValiIFMToDA DataValiIFMToDAObj = new DataValiIFMToDA();
         public DataValiPLCToDA DataValiPLCToDAObj = new DataValiPLCToDA();
-        public DataSetSPValiPLCToDA DataSetSPValiPLCToDAObj = new DataSetSPValiPLCToDA();
-        public DataButtonReadConfigValiIFM DataButtonReadConfigValiIFMObj = new DataButtonReadConfigValiIFM();
+        
         //
 
 
         public DataValueDAToRValiIFM DataValueDAToRValiIFMObj = new DataValueDAToRValiIFM();
         public DataConfParaDAToRValiIFM DataConfParaDAToRValiIFMObj = new DataConfParaDAToRValiIFM();
-        //
         public DataDAToRValiPLC DataDAToRValiPLCObj = new DataDAToRValiPLC();
+        public DataDAToRInverter DataDAToRInverterObj = new DataDAToRInverter();
         public DataRValiPLCToDA DataRValiPLCToDAObj = new DataRValiPLCToDA();
         //
 
-
+        public DataSetSPValiPLCToDA DataSetSPValiPLCToDAObj = new DataSetSPValiPLCToDA();
+        public DataButtonReadConfigValiIFM DataButtonReadConfigValiIFMObj = new DataButtonReadConfigValiIFM();
+        public DataSetSPRInverter DataSetSPRInverterObj = new DataSetSPRInverter();
+        public DataSetOnOffRInverter DataSetOnOffRInverterObj = new DataSetOnOffRInverter();
 
         public Form1()
         {
@@ -145,11 +147,21 @@ namespace DesktopAppDigitalLab
             DataItemReadPLCValiPLC.Add(realPosEnc);
             DataItemReadPLCValiPLC.Add(realLS1);
             DataItemReadPLCValiPLC.Add(realLS2);
+
+            //Read value Inverter
+            DataItemReadPLCInverter.Add(realOnOff);
+            DataItemReadPLCInverter.Add(realVelSPG120);
+            DataItemReadPLCInverter.Add(realVelG120);
+
+
             //---------------------------------------------------------------Write PLC
             DataItemWritePLCValiPLC.Add(setRealPosSP);
             DataItemWritePLCValiPLC.Add(setRealVelSP);
 
             DataItemButtonReadConfigValiIFM.Add(readConfigItem);
+
+            DataSetSPItemWritePLCInverter.Add(setRealVelSPG120);
+            DataSetOnOffItemWritePLCInverter.Add(setRealOnOffG120);
         }
 
         //Class
@@ -188,7 +200,10 @@ namespace DesktopAppDigitalLab
             public ushort AI, AO;
             public float velSP, vel, posSP, pos, posHome;
         }
-        //
+        public class DataDAToInverter   //PLCSIM --> DA --> Inverter ảo
+        {
+
+        }
         public class DataValiIFMToDA
         {
             public byte idV4;
@@ -244,7 +259,7 @@ namespace DesktopAppDigitalLab
             public byte cDirRB3100 = 2;
             public byte OUT_ENCRB = 2;
         }
-        public class DataDAToRValiPLC
+        public class DataDAToRValiPLC           //Giá trị từ ValiPLC thật --> DA --> AR cho ValiPLC thật
         {
             public byte idR3;
             public byte DI, DO;
@@ -253,7 +268,12 @@ namespace DesktopAppDigitalLab
             public bool LS1, LS2;
 
         }
-        //
+        public class DataDAToRInverter          //Giá trị từ Inverter thật --> DA --> AR cho Inverter thật 
+        {
+            public byte idR4;
+            public ushort onOffG120;
+            public ushort velSPG120, velG120;
+        }
         public class DataRValiPLCToDA
         {
             public byte idR5;
@@ -265,6 +285,17 @@ namespace DesktopAppDigitalLab
         {
             public byte idR6;
             public bool readConfig;
+        }
+
+        public class DataSetSPRInverter
+        {
+            public byte idR7;
+            public ushort velSetSPG120;
+        }
+        public class DataSetOnOffRInverter
+        {
+            public byte idR8;
+            public ushort onOffSetG120;
         }
         //
         #endregion
@@ -284,6 +315,9 @@ namespace DesktopAppDigitalLab
         private static List<DataItem> DataItemWritePLCValiPLC = new List<DataItem>();
         private static List<DataItem> DataSetSPItemWritePLCSIMValiPLC = new List<DataItem>();
         private static List<DataItem> DataItemButtonReadConfigValiIFM = new List<DataItem>();
+        private static List<DataItem> DataItemReadPLCInverter = new List<DataItem>();
+        private static List<DataItem> DataSetSPItemWritePLCInverter = new List<DataItem>();
+        private static List<DataItem> DataSetOnOffItemWritePLCInverter = new List<DataItem>();
 
         #region DataItemsWritePLCSIMValiIFM
         private static DataItem w0UGTItem = new DataItem()
@@ -964,6 +998,40 @@ namespace DesktopAppDigitalLab
 
         #endregion
 
+        #region DataItemReadPLCInverter
+        private static DataItem realOnOff = new DataItem()
+        {
+            DataType = DataType.Output,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 256,
+            Value = new object()
+        };
+        private static DataItem realVelSPG120 = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Word,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 96,
+            Value = new object()
+        };
+        private static DataItem realVelG120 = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Word,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 98,
+            Value = new object()
+        };
+
+        #endregion
+
         #region DataSetSPItemWritePLCSIMValiPLC
         private static DataItem setRealPosSP = new DataItem()
         {
@@ -1000,6 +1068,33 @@ namespace DesktopAppDigitalLab
             Value = new object()
         };
         #endregion
+
+        #region DataSetSPItemWritePLCInverter
+        private static DataItem setRealVelSPG120 = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Word,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 96,
+            Value = new object()
+        };
+        #endregion
+
+        #region DataSetOnOffItemWritePLCInverter
+        private static DataItem setRealOnOffG120 = new DataItem()
+        {
+            DataType = DataType.Output,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 256,
+            Value = new object()
+        };
+        #endregion
+
         //Timer
         private async void timerReadPLCSIM_Tick(object sender, EventArgs e)
         {
@@ -1079,7 +1174,7 @@ namespace DesktopAppDigitalLab
                     DataDAToValiPLCObj.posSP = (float)DataItemsReadPLCSIMValiPLC[4].Value;
                     DataDAToValiPLCObj.pos = (float)DataItemsReadPLCSIMValiPLC[5].Value;
                     DataDAToValiPLCObj.posHome = (float)DataItemsReadPLCSIMValiPLC[6].Value;
-
+                    
                 }
                 catch (Exception ex1)
                 {
@@ -1144,6 +1239,7 @@ namespace DesktopAppDigitalLab
                     await myPLC.ReadMultipleVarsAsync(DataItemReadPLCValueRValiIFM);
                     await myPLC.ReadMultipleVarsAsync(DataItemReadPLCConfParaRValiIFM);
                     await myPLC.ReadMultipleVarsAsync(DataItemReadPLCValiPLC);
+                    await myPLC.ReadMultipleVarsAsync(DataItemReadPLCInverter);
 
                     DataValueDAToRValiIFMObj.w0UGT = (ushort)DataItemReadPLCValueRValiIFM[0].Value;
                     DataValueDAToRValiIFMObj.w1UGT = (ushort)DataItemReadPLCValueRValiIFM[1].Value;
@@ -1187,6 +1283,11 @@ namespace DesktopAppDigitalLab
                     DataDAToRValiPLCObj.posEnc = (float)DataItemReadPLCValiPLC[9].Value;
                     DataDAToRValiPLCObj.LS1 = (bool)DataItemReadPLCValiPLC[10].Value;
                     DataDAToRValiPLCObj.LS2 = (bool)DataItemReadPLCValiPLC[11].Value;
+
+                    DataDAToRInverterObj.onOffG120 = (ushort)DataItemReadPLCInverter[0].Value;
+                    DataDAToRInverterObj.velSPG120 = (ushort)DataItemReadPLCInverter[1].Value;
+                    DataDAToRInverterObj.velG120 = (ushort)DataItemReadPLCInverter[2].Value;
+
                 }
                 catch (Exception ex3)
                 {
@@ -1212,6 +1313,7 @@ namespace DesktopAppDigitalLab
                     outO5CItem.Value = DataValiIFMToDAObj.outO5C;
 
                     await myPLC.WriteAsync(DataItemsWritePLCSIMValiIFM.ToArray());
+                    
 
                     //Write vào ValiPLC thật
                     if (writeSPRealValiPLC == true)
@@ -1226,6 +1328,18 @@ namespace DesktopAppDigitalLab
                         readConfigItem.Value = (bool)DataButtonReadConfigValiIFMObj.readConfig;
                         await myPLC.WriteAsync(DataItemButtonReadConfigValiIFM.ToArray());
                         writeConfig = false;
+                    }    
+                    if (writeSPRealInverter == true)
+                    {
+                        setRealVelSPG120.Value = (ushort)DataSetSPRInverterObj.velSetSPG120;
+                        await myPLC.WriteAsync(DataSetSPItemWritePLCInverter.ToArray());
+                        writeSPRealInverter = false;
+                    }    
+                    if (writeOnOffRealInverter == true)
+                    {
+                        setRealOnOffG120.Value = (ushort)DataSetOnOffRInverterObj.onOffSetG120;
+                        await myPLC.WriteAsync(DataSetOnOffItemWritePLCInverter.ToArray());
+                        writeOnOffRealInverter = false;
                     }    
                 }
                 catch (Exception ex4)
@@ -1252,11 +1366,14 @@ namespace DesktopAppDigitalLab
                 {
                     jsonPublish = JsonConvert.SerializeObject(DataValueDAToRValiIFMObj);
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
-                    //Thread.Sleep(20);
+                    
                     jsonPublish = JsonConvert.SerializeObject(DataConfParaDAToRValiIFMObj);
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 
                     jsonPublish = JsonConvert.SerializeObject(DataDAToRValiPLCObj);
+                    desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+
+                    jsonPublish = JsonConvert.SerializeObject(DataDAToRInverterObj);
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
                 }
             }    
@@ -1302,10 +1419,12 @@ namespace DesktopAppDigitalLab
         //Button 
         private async void btnConnectPLCSIM_Click(object sender, EventArgs e)
         {
-            timerReadPLCSIM.Start();
-            timerWritePLCSIM.Start();
+            //timerReadPLCSIM.Start();
+            //timerWritePLCSIM.Start();
             if (clickBtnPLCSIM == false)
-            {
+            {   
+                timerReadPLCSIM.Start();
+                timerWritePLCSIM.Start();//Sua
                 clickBtnPLCSIM = true;
                 flagPLC = 0;
                 btnConnectPLC.Visible = false;
@@ -1339,11 +1458,13 @@ namespace DesktopAppDigitalLab
         private async void btnConnectPLC_Click(object sender, EventArgs e)
         {
             
-                timerReadPLC.Start();
-                timerWritePLC.Start();
+                //timerReadPLC.Start();
+                //timerWritePLC.Start();
             
                 if (clickBtnPLC == false)
                 {
+                    timerReadPLC.Start();
+                    timerWritePLC.Start();//Sua
                     clickBtnPLC = true;
                     flagPLCSIM = 0;
                     btnConnectPLCSIM.Visible = false;
@@ -1419,6 +1540,7 @@ namespace DesktopAppDigitalLab
                 picConnectBrokerON.Visible = false;
                 picConnectBrokerOFF.Visible = true;
                 btnConnectBroker.Text = "KẾT NỐI";
+                timerMQTT.Stop();//Sua
             }    
             
         }
@@ -1477,7 +1599,16 @@ namespace DesktopAppDigitalLab
                     DataButtonReadConfigValiIFMObj = JsonConvert.DeserializeObject<DataButtonReadConfigValiIFM>(jsonSubscribe);
                     writeConfig = true;
                 }
-
+                else if (jsonSubscribe.Contains("idR7"))
+                {
+                    DataSetSPRInverterObj = JsonConvert.DeserializeObject<DataSetSPRInverter>(jsonSubscribe);
+                    writeSPRealInverter = true;
+                }    
+                else if (jsonSubscribe.Contains("idR8"))
+                {
+                    DataSetOnOffRInverterObj = JsonConvert.DeserializeObject<DataSetOnOffRInverter>(jsonSubscribe);
+                    writeOnOffRealInverter = true;
+                }    
 
                 //Chưa có truyền từ AR App xuống Vali thật
             }
