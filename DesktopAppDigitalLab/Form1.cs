@@ -27,11 +27,11 @@ namespace DesktopAppDigitalLab
         public string topicValiIFMtoDA, topicDAToValiIFM;
         public bool clickBtnBroker, clickBtnPLCSIM, clickBtnPLC;
         public int flagPLCSIM, flagPLC;
-        public bool writeSPRealValiPLC, writeSPSimulateValiPLC, writeConfig, writeSPRealInverter, writeOnOffRealInverter;
+        public bool writeSPRealValiPLC, writeSPSimulateValiPLC, writeConfig, writeSPRealInverter, writeOnOffRealInverter, writeSPSiInverter, writeOnOffSiInverter;
 
         public DataDAToValiIFM DataDAToValiIFMObj = new DataDAToValiIFM();
         public DataDAToValiPLC DataDAToValiPLCObj = new DataDAToValiPLC();
-        //
+        public DataDAToInverter DataDAToInverterObj = new DataDAToInverter();
         public DataValiIFMToDA DataValiIFMToDAObj = new DataValiIFMToDA();
         public DataValiPLCToDA DataValiPLCToDAObj = new DataValiPLCToDA();
         
@@ -43,12 +43,16 @@ namespace DesktopAppDigitalLab
         public DataDAToRValiPLC DataDAToRValiPLCObj = new DataDAToRValiPLC();
         public DataDAToRInverter DataDAToRInverterObj = new DataDAToRInverter();
         public DataRValiPLCToDA DataRValiPLCToDAObj = new DataRValiPLCToDA();
+        public DataInverterToDA DataInverterToDAObj = new DataInverterToDA();
         //
 
         public DataSetSPValiPLCToDA DataSetSPValiPLCToDAObj = new DataSetSPValiPLCToDA();
         public DataButtonReadConfigValiIFM DataButtonReadConfigValiIFMObj = new DataButtonReadConfigValiIFM();
         public DataSetSPRInverter DataSetSPRInverterObj = new DataSetSPRInverter();
         public DataSetOnOffRInverter DataSetOnOffRInverterObj = new DataSetOnOffRInverter();
+
+        public DataSetSPInverter DataSetSPInverterObj = new DataSetSPInverter();
+        public DataSetOnOffInverter DataSetOnOffInverterObj = new DataSetOnOffInverter();
 
         public Form1()
         {
@@ -162,6 +166,16 @@ namespace DesktopAppDigitalLab
 
             DataSetSPItemWritePLCInverter.Add(setRealVelSPG120);
             DataSetOnOffItemWritePLCInverter.Add(setRealOnOffG120);
+
+            DataItemReadPLCSIMInverter.Add(siOnOffG120);
+            DataItemReadPLCSIMInverter.Add(siVelSPG120); 
+            DataItemReadPLCSIMInverter.Add(siVelG120);
+
+            DataSetSPItemWritePLCSIMInverter.Add(setSiVelSPG120);
+            DataSetOnOffItemWritePLCSIMInverter.Add(setSiOnOffG120);
+
+            DataItemWritePLCSIMInverter.Add(writeVelG120);
+
         }
 
         //Class
@@ -202,7 +216,14 @@ namespace DesktopAppDigitalLab
         }
         public class DataDAToInverter   //PLCSIM --> DA --> Inverter ảo
         {
-
+            public byte idV3;
+            public ushort onOffG120;
+            public ushort velSPG120, velG120;
+        }
+        public class DataInverterToDA   //Inverter PLCSIM
+        {
+            public byte idV9;
+            public ushort velG120;
         }
         public class DataValiIFMToDA
         {
@@ -226,7 +247,17 @@ namespace DesktopAppDigitalLab
             public float siPosSP, siVelSP;
         }
         //
-        
+        public class DataSetSPInverter
+        {
+            public byte idV7;
+            public ushort siVelSetSPG120;
+
+        }
+        public class DataSetOnOffInverter
+        {
+            public byte idV8;
+            public ushort siOnOffSetG120;
+        }
         //----------------------------------------------------------------------
         public class DataValueDAToRValiIFM      //Giá trị cảm biến từ ValiIFM thật --> DA --> AR cho ValiIFM thật
         {
@@ -318,6 +349,11 @@ namespace DesktopAppDigitalLab
         private static List<DataItem> DataItemReadPLCInverter = new List<DataItem>();
         private static List<DataItem> DataSetSPItemWritePLCInverter = new List<DataItem>();
         private static List<DataItem> DataSetOnOffItemWritePLCInverter = new List<DataItem>();
+
+        private static List<DataItem> DataItemReadPLCSIMInverter = new List<DataItem>();
+        private static List<DataItem> DataSetSPItemWritePLCSIMInverter = new List<DataItem>();
+        private static List<DataItem> DataSetOnOffItemWritePLCSIMInverter = new List<DataItem>();
+        private static List<DataItem> DataItemWritePLCSIMInverter = new List<DataItem>();
 
         #region DataItemsWritePLCSIMValiIFM
         private static DataItem w0UGTItem = new DataItem()
@@ -615,7 +651,6 @@ namespace DesktopAppDigitalLab
             Value = new object()
         };
         #endregion
-
 
         #region DataItemReadPLCValueRValiIFM
         private static DataItem w0UGT = new DataItem()
@@ -1095,6 +1130,78 @@ namespace DesktopAppDigitalLab
         };
         #endregion
 
+        // Chinh dia chi tag
+        #region DataItemReadPLCSIMInverter
+        private static DataItem siOnOffG120 = new DataItem()
+        {
+            DataType = DataType.Output,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 256,
+            Value = new object()
+        };
+        private static DataItem siVelSPG120 = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Word,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 100,
+            Value = new object()
+        };
+        private static DataItem siVelG120 = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Word,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 102,
+            Value = new object()
+        };
+        #endregion
+
+        #region DataSetSPItemWritePLCSIMInverter
+        private static DataItem setSiVelSPG120 = new DataItem()
+        {
+            DataType = DataType.DataBlock,
+            VarType = VarType.Word,
+            DB = 1000,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 100,
+            Value = new object()
+        };
+        #endregion
+
+        #region DataSetOnOffItemWritePLCSIMInverter
+        private static DataItem setSiOnOffG120 = new DataItem()
+        {
+            DataType = DataType.Output,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 256,
+            Value = new object()
+        };
+        #endregion
+
+        #region DataItemWritePLCSIMInverter
+        private static DataItem writeVelG120 = new DataItem()
+        {
+            DataType = DataType.Memory,
+            VarType = VarType.Word,
+            DB = 0,
+            BitAdr = 0,
+            Count = 1,
+            StartByteAdr = 258,
+            Value = new object()
+        };
+        #endregion
         //Timer
         private async void timerReadPLCSIM_Tick(object sender, EventArgs e)
         {
@@ -1174,7 +1281,11 @@ namespace DesktopAppDigitalLab
                     DataDAToValiPLCObj.posSP = (float)DataItemsReadPLCSIMValiPLC[4].Value;
                     DataDAToValiPLCObj.pos = (float)DataItemsReadPLCSIMValiPLC[5].Value;
                     DataDAToValiPLCObj.posHome = (float)DataItemsReadPLCSIMValiPLC[6].Value;
-                    
+                    await myPLC.ReadMultipleVarsAsync(DataItemReadPLCSIMInverter);
+                    DataDAToInverterObj.onOffG120 = (ushort)DataItemReadPLCSIMInverter[0].Value;
+                    DataDAToInverterObj.velSPG120 = (ushort)DataItemReadPLCSIMInverter[1].Value;
+                    DataDAToInverterObj.velG120 = (ushort)DataItemReadPLCSIMInverter[2].Value;
+
                 }
                 catch (Exception ex1)
                 {
@@ -1210,13 +1321,30 @@ namespace DesktopAppDigitalLab
                     LS2.Value = (bool)DataValiPLCToDAObj.LS2;
                     await myPLC.WriteAsync(DataItemsWritePLCSIMValiPLC.ToArray());
 
-                    
+                    writeVelG120.Value = (ushort)DataInverterToDAObj.velG120;
+                    await myPLC.WriteAsync(DataItemWritePLCSIMInverter.ToArray());
+
                     if (writeSPSimulateValiPLC == true)
                     {
                         setPosSP.Value = (float)DataSetSPValiPLCToDAObj.siPosSP;//
                         setVelSP.Value = (float)DataSetSPValiPLCToDAObj.siVelSP;//
                         await myPLC.WriteAsync(DataSetSPItemWritePLCSIMValiPLC.ToArray());
                         writeSPSimulateValiPLC = false;
+                    }
+
+                    ////
+                    ///
+                    if (writeSPSiInverter == true)
+                    {
+                        setSiVelSPG120.Value = (ushort)DataSetSPInverterObj.siVelSetSPG120;
+                        await myPLC.WriteAsync(DataSetSPItemWritePLCSIMInverter.ToArray());
+                        writeSPSiInverter = false;
+                    }
+                    if (writeOnOffSiInverter == true)
+                    {
+                        setSiOnOffG120.Value = (ushort)DataSetOnOffInverterObj.siOnOffSetG120;
+                        await myPLC.WriteAsync(DataSetOnOffItemWritePLCSIMInverter.ToArray());
+                        writeOnOffSiInverter = false;
                     }
                 }
                 catch (Exception ex2)
@@ -1359,6 +1487,9 @@ namespace DesktopAppDigitalLab
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 
                     jsonPublish = JsonConvert.SerializeObject(DataDAToValiPLCObj);
+                    desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+
+                    jsonPublish = JsonConvert.SerializeObject(DataDAToInverterObj);
                     desktopAppClient.Publish(topicDAToValiIFM, Encoding.UTF8.GetBytes(jsonPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
 
                 }
@@ -1588,6 +1719,20 @@ namespace DesktopAppDigitalLab
                 {
                     DataSetSPValiPLCToDAObj = JsonConvert.DeserializeObject<DataSetSPValiPLCToDA>(jsonSubscribe);
                     writeSPSimulateValiPLC = true;
+                }    
+                else if (jsonSubscribe.Contains("idV7"))
+                {
+                    DataSetSPInverterObj = JsonConvert.DeserializeObject<DataSetSPInverter>(jsonSubscribe);
+                    writeSPSiInverter = true;
+                }
+                else if (jsonSubscribe.Contains("idV8"))
+                {
+                    DataSetOnOffInverterObj = JsonConvert.DeserializeObject<DataSetOnOffInverter>(jsonSubscribe);
+                    writeOnOffSiInverter = true;
+                }
+                else if (jsonSubscribe.Contains("idV9"))
+                {
+                    DataInverterToDAObj = JsonConvert.DeserializeObject<DataInverterToDA>(jsonSubscribe);
                 }    
                 else if (jsonSubscribe.Contains("idR5"))
                 {
