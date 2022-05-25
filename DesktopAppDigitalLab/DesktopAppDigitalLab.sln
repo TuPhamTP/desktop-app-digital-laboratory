@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31829.152
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopAppDigitalLab", "DesktopAppDigitalLab.csproj", "{1C728919-AE6A-4B16-AC71-568605300160}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataClass", "..\DataClass\DataClass.csproj", "{0C2CE108-1307-47AC-B212-FD9DEE0F2C1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1C728919-AE6A-4B16-AC71-568605300160}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C728919-AE6A-4B16-AC71-568605300160}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C728919-AE6A-4B16-AC71-568605300160}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C2CE108-1307-47AC-B212-FD9DEE0F2C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C2CE108-1307-47AC-B212-FD9DEE0F2C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C2CE108-1307-47AC-B212-FD9DEE0F2C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C2CE108-1307-47AC-B212-FD9DEE0F2C1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
