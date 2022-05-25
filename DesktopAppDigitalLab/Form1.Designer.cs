@@ -99,19 +99,19 @@ namespace DesktopAppDigitalLab
             // timerConnect
             // 
             this.timerConnect.Interval = 10;
-            this.timerConnect.Tick += new System.EventHandler(this.timerConnect_Tick);
+            this.timerConnect.Tick += new System.EventHandler(this.TimerConnect_Tick);
             // 
             // timerReadPLCSIM
             // 
-            this.timerReadPLCSIM.Tick += new System.EventHandler(this.timerReadPLCSIM_Tick);
+            this.timerReadPLCSIM.Tick += new System.EventHandler(this.TimerReadPLCSIM_Tick);
             // 
             // timerMQTT
             // 
-            this.timerMQTT.Tick += new System.EventHandler(this.timerMQTT_Tick);
+            this.timerMQTT.Tick += new System.EventHandler(this.TimerMQTT_Tick);
             // 
             // timerWritePLCSIM
             // 
-            this.timerWritePLCSIM.Tick += new System.EventHandler(this.timerWritePLCSIM_Tick);
+            this.timerWritePLCSIM.Tick += new System.EventHandler(this.TimerWritePLCSIM_Tick);
             // 
             // panel5
             // 
@@ -148,7 +148,7 @@ namespace DesktopAppDigitalLab
             this.label13.ForeColor = System.Drawing.Color.White;
             this.label13.Location = new System.Drawing.Point(24, 78);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(43, 29);
+            this.label13.Size = new System.Drawing.Size(41, 28);
             this.label13.TabIndex = 1;
             this.label13.Text = "ID:";
             // 
@@ -169,7 +169,7 @@ namespace DesktopAppDigitalLab
             this.btnSubmitID.TabIndex = 2;
             this.btnSubmitID.Text = "GỬI ID";
             this.btnSubmitID.UseVisualStyleBackColor = false;
-            this.btnSubmitID.Click += new System.EventHandler(this.btnSubmitID_Click);
+            this.btnSubmitID.Click += new System.EventHandler(this.BtnSubmitID_Click);
             // 
             // panel9
             // 
@@ -188,7 +188,7 @@ namespace DesktopAppDigitalLab
             this.lblID.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(212)))), ((int)(((byte)(158)))));
             this.lblID.Location = new System.Drawing.Point(66, 78);
             this.lblID.Name = "lblID";
-            this.lblID.Size = new System.Drawing.Size(27, 29);
+            this.lblID.Size = new System.Drawing.Size(25, 28);
             this.lblID.TabIndex = 7;
             this.lblID.Text = "0";
             // 
@@ -243,7 +243,7 @@ namespace DesktopAppDigitalLab
             this.picEyeOff.Size = new System.Drawing.Size(30, 18);
             this.picEyeOff.TabIndex = 8;
             this.picEyeOff.TabStop = false;
-            this.picEyeOff.Click += new System.EventHandler(this.picEyeOff_Click);
+            this.picEyeOff.Click += new System.EventHandler(this.PicEyeOff_Click);
             // 
             // picEyeOn
             // 
@@ -254,7 +254,7 @@ namespace DesktopAppDigitalLab
             this.picEyeOn.Size = new System.Drawing.Size(30, 15);
             this.picEyeOn.TabIndex = 7;
             this.picEyeOn.TabStop = false;
-            this.picEyeOn.Click += new System.EventHandler(this.picEyeOn_Click);
+            this.picEyeOn.Click += new System.EventHandler(this.PicEyeOn_Click);
             // 
             // picConnectBrokerOFF
             // 
@@ -287,11 +287,10 @@ namespace DesktopAppDigitalLab
             this.lblNotifyConnectBroker.ForeColor = System.Drawing.Color.White;
             this.lblNotifyConnectBroker.Location = new System.Drawing.Point(235, 71);
             this.lblNotifyConnectBroker.Name = "lblNotifyConnectBroker";
-            this.lblNotifyConnectBroker.Size = new System.Drawing.Size(176, 17);
+            this.lblNotifyConnectBroker.Size = new System.Drawing.Size(158, 15);
             this.lblNotifyConnectBroker.TabIndex = 1;
             this.lblNotifyConnectBroker.Text = "Kết nối không thành công! ";
             this.lblNotifyConnectBroker.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblNotifyConnectBroker.Click += new System.EventHandler(this.lblNotifyConnectBroker_Click);
             // 
             // panel8
             // 
@@ -347,7 +346,7 @@ namespace DesktopAppDigitalLab
             this.btnConnectBroker.TabIndex = 2;
             this.btnConnectBroker.Text = "KẾT NỐI";
             this.btnConnectBroker.UseVisualStyleBackColor = false;
-            this.btnConnectBroker.Click += new System.EventHandler(this.btnConnectBroker_Click);
+            this.btnConnectBroker.Click += new System.EventHandler(this.BtnConnectBroker_Click);
             // 
             // label4
             // 
@@ -356,10 +355,9 @@ namespace DesktopAppDigitalLab
             this.label4.ForeColor = System.Drawing.Color.White;
             this.label4.Location = new System.Drawing.Point(358, 198);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(122, 29);
+            this.label4.Size = new System.Drawing.Size(116, 28);
             this.label4.TabIndex = 1;
             this.label4.Text = "Mật khẩu:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label3
             // 
@@ -368,10 +366,9 @@ namespace DesktopAppDigitalLab
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(22, 198);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(184, 29);
+            this.label3.Size = new System.Drawing.Size(175, 28);
             this.label3.TabIndex = 1;
             this.label3.Text = "Tên đăng nhập:";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label2
             // 
@@ -380,10 +377,9 @@ namespace DesktopAppDigitalLab
             this.label2.ForeColor = System.Drawing.Color.White;
             this.label2.Location = new System.Drawing.Point(360, 100);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 29);
+            this.label2.Size = new System.Drawing.Size(65, 28);
             this.label2.TabIndex = 1;
             this.label2.Text = "Port:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label5
             // 
@@ -403,7 +399,7 @@ namespace DesktopAppDigitalLab
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(22, 100);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 29);
+            this.label1.Size = new System.Drawing.Size(168, 28);
             this.label1.TabIndex = 1;
             this.label1.Text = "Địa chỉ Broker:";
             // 
@@ -431,7 +427,6 @@ namespace DesktopAppDigitalLab
             this.txtPassword.TabIndex = 0;
             this.txtPassword.Text = "passwordmqtt2";
             this.txtPassword.UseSystemPasswordChar = true;
-            this.txtPassword.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // txtUsername
             // 
@@ -506,7 +501,7 @@ namespace DesktopAppDigitalLab
             this.lblNotifyConnectPLC.ForeColor = System.Drawing.Color.White;
             this.lblNotifyConnectPLC.Location = new System.Drawing.Point(204, 74);
             this.lblNotifyConnectPLC.Name = "lblNotifyConnectPLC";
-            this.lblNotifyConnectPLC.Size = new System.Drawing.Size(176, 17);
+            this.lblNotifyConnectPLC.Size = new System.Drawing.Size(158, 15);
             this.lblNotifyConnectPLC.TabIndex = 12;
             this.lblNotifyConnectPLC.Text = "Kết nối không thành công! ";
             this.lblNotifyConnectPLC.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -549,7 +544,7 @@ namespace DesktopAppDigitalLab
             this.btnConnectPLC.TabIndex = 2;
             this.btnConnectPLC.Text = "KẾT NỐI";
             this.btnConnectPLC.UseVisualStyleBackColor = false;
-            this.btnConnectPLC.Click += new System.EventHandler(this.btnConnectPLC_Click);
+            this.btnConnectPLC.Click += new System.EventHandler(this.BtnConnectPLC_Click);
             // 
             // label7
             // 
@@ -558,7 +553,7 @@ namespace DesktopAppDigitalLab
             this.label7.ForeColor = System.Drawing.Color.White;
             this.label7.Location = new System.Drawing.Point(23, 107);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(190, 29);
+            this.label7.Size = new System.Drawing.Size(181, 28);
             this.label7.TabIndex = 1;
             this.label7.Text = "Địa chỉ IP (PLC):";
             // 
@@ -623,7 +618,7 @@ namespace DesktopAppDigitalLab
             this.lblNotifyConnectPLCSIM.ForeColor = System.Drawing.Color.White;
             this.lblNotifyConnectPLCSIM.Location = new System.Drawing.Point(204, 71);
             this.lblNotifyConnectPLCSIM.Name = "lblNotifyConnectPLCSIM";
-            this.lblNotifyConnectPLCSIM.Size = new System.Drawing.Size(176, 17);
+            this.lblNotifyConnectPLCSIM.Size = new System.Drawing.Size(158, 15);
             this.lblNotifyConnectPLCSIM.TabIndex = 12;
             this.lblNotifyConnectPLCSIM.Text = "Kết nối không thành công! ";
             this.lblNotifyConnectPLCSIM.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -645,7 +640,7 @@ namespace DesktopAppDigitalLab
             this.label9.ForeColor = System.Drawing.Color.White;
             this.label9.Location = new System.Drawing.Point(21, 100);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(178, 29);
+            this.label9.Size = new System.Drawing.Size(170, 28);
             this.label9.TabIndex = 10;
             this.label9.Text = "Địa chỉ IP (PC):";
             // 
@@ -666,7 +661,7 @@ namespace DesktopAppDigitalLab
             this.btnConnectPLCSIM.TabIndex = 2;
             this.btnConnectPLCSIM.Text = "KẾT NỐI";
             this.btnConnectPLCSIM.UseVisualStyleBackColor = false;
-            this.btnConnectPLCSIM.Click += new System.EventHandler(this.btnConnectPLCSIM_Click);
+            this.btnConnectPLCSIM.Click += new System.EventHandler(this.BtnConnectPLCSIM_Click);
             // 
             // label11
             // 
@@ -695,11 +690,11 @@ namespace DesktopAppDigitalLab
             // timerReadPLC
             // 
             this.timerReadPLC.Interval = 150;
-            this.timerReadPLC.Tick += new System.EventHandler(this.timerReadPLC_Tick);
+            this.timerReadPLC.Tick += new System.EventHandler(this.TimerReadPLC_Tick);
             // 
             // timerWritePLC
             // 
-            this.timerWritePLC.Tick += new System.EventHandler(this.timerWritePLC_Tick);
+            this.timerWritePLC.Tick += new System.EventHandler(this.TimerWritePLC_Tick);
             // 
             // Form1
             // 
@@ -719,7 +714,6 @@ namespace DesktopAppDigitalLab
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Desktop App For Digital Laboratory";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel1.ResumeLayout(false);
