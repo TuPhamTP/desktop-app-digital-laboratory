@@ -230,16 +230,7 @@ namespace DataItems
             StartByteAdr = 76,
             Value = new object()
         };
-        public static DataItem panelSwitchIn = new DataItem()
-        {
-            DataType = DataType.DataBlock,
-            VarType = VarType.Byte,
-            DB = 1,
-            BitAdr = 0,
-            Count = 1,
-            StartByteAdr = 0,
-            Value = new object()
-        };
+
 
         #endregion
 
@@ -314,16 +305,6 @@ namespace DataItems
             Count = 1,
             StartByteAdr = 88,
             Value = new object()
-        };
-        public static DataItem panelSwitchOut = new DataItem()
-        {
-            DataType = DataType.DataBlock,
-            VarType = VarType.Byte,
-            DB = 1,
-            BitAdr = 0,
-            Count = 1,
-            StartByteAdr = 1,
-            Value = new object(),
         };
         #endregion
 

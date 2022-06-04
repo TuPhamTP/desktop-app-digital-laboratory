@@ -1,0 +1,9 @@
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\bin\Debug\DataItems.dll
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\bin\Debug\DataItems.pdb
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\bin\Debug\S7.Net.dll
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\bin\Debug\S7.Net.xml
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\obj\Debug\DataItems.csproj.AssemblyReference.cache
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\obj\Debug\DataItems.csproj.CoreCompileInputs.cache
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\obj\Debug\DataItems.csproj.CopyComplete
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\obj\Debug\DataItems.dll
+D:\Vali PLC\desktop-app-digital-laboratory\DataItems\obj\Debug\DataItems.pdb

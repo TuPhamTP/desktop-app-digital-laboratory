@@ -81,7 +81,6 @@ namespace DesktopAppDigitalLab
             DataItemsWritePLCSIMValiPLC.Add(DataItems.DataItems.AI);
             DataItemsWritePLCSIMValiPLC.Add(DataItems.DataItems.LS1);
             DataItemsWritePLCSIMValiPLC.Add(DataItems.DataItems.LS2);
-            DataItemsWritePLCSIMValiPLC.Add(DataItems.DataItems.panelSwitchIn);
 
             DataSetSPItemWritePLCSIMValiPLC.Add(DataItems.DataItems.setPosSP);
             DataSetSPItemWritePLCSIMValiPLC.Add(DataItems.DataItems.setVelSP);
@@ -103,7 +102,6 @@ namespace DesktopAppDigitalLab
             DataItemsReadPLCSIMValiPLC.Add(DataItems.DataItems.posSP);
             DataItemsReadPLCSIMValiPLC.Add(DataItems.DataItems.pos);
             DataItemsReadPLCSIMValiPLC.Add(DataItems.DataItems.posHome);
-            DataItemsReadPLCSIMValiPLC.Add(DataItems.DataItems.panelSwitchOut);
 
 
             //--------------------------------------------------------------Read PLC
@@ -174,7 +172,7 @@ namespace DesktopAppDigitalLab
             DataSetOnOffItemWritePLCSIMInverter.Add(DataItems.DataItems.setSiOnOffG120);
 
             DataItemWritePLCSIMInverter.Add(DataItems.DataItems.writeVelG120);
-            
+
 
         }
 
@@ -202,7 +200,7 @@ namespace DesktopAppDigitalLab
         private static readonly List<DataItem> DataSetOnOffItemWritePLCSIMInverter = new List<DataItem>();
         private static readonly List<DataItem> DataItemWritePLCSIMInverter = new List<DataItem>();
 
-        
+
         //Timer
         private async void TimerReadPLCSIM_Tick(object sender, EventArgs e)
         {
@@ -281,7 +279,7 @@ namespace DesktopAppDigitalLab
                     DataDAToValiPLCObj.posSP = (float)DataItemsReadPLCSIMValiPLC[4].Value;
                     DataDAToValiPLCObj.pos = (float)DataItemsReadPLCSIMValiPLC[5].Value;
                     DataDAToValiPLCObj.posHome = (float)DataItemsReadPLCSIMValiPLC[6].Value;
-                    DataDAToValiPLCObj.panelSwitchOut = (byte)DataItemsReadPLCSIMValiPLC[7].Value;
+
                     await myPLC.ReadMultipleVarsAsync(DataItemReadPLCSIMInverter);
                     DataDAToInverterObj.onOffG120 = (ushort)DataItemReadPLCSIMInverter[0].Value;
                     DataDAToInverterObj.velSPG120 = (ushort)DataItemReadPLCSIMInverter[1].Value;
@@ -320,7 +318,6 @@ namespace DesktopAppDigitalLab
                     DataItems.DataItems.AI.Value = (ushort)DataValiPLCToDAObj.AI;
                     DataItems.DataItems.LS1.Value = (bool)DataValiPLCToDAObj.LS1;
                     DataItems.DataItems.LS2.Value = (bool)DataValiPLCToDAObj.LS2;
-                    DataItems.DataItems.panelSwitchIn.Value = (byte)DataValiPLCToDAObj.paneSwitchIn;
                     await myPLC.WriteAsync(DataItemsWritePLCSIMValiPLC.ToArray());
 
                     DataItems.DataItems.writeVelG120.Value = (ushort)DataInverterToDAObj.velG120;
@@ -334,14 +331,13 @@ namespace DesktopAppDigitalLab
                         writeSPSimulateValiPLC = false;
                     }
 
-                    ////
-                    ///
                     if (writeSPSiInverter == true)
                     {
                         DataItems.DataItems.setSiVelSPG120.Value = (ushort)DataSetSPInverterObj.siVelSetSPG120;
                         await myPLC.WriteAsync(DataSetSPItemWritePLCSIMInverter.ToArray());
                         writeSPSiInverter = false;
                     }
+
                     if (writeOnOffSiInverter == true)
                     {
                         DataItems.DataItems.setSiOnOffG120.Value = (ushort)DataSetOnOffInverterObj.siOnOffSetG120;

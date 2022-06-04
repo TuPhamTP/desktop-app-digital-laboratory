@@ -1,0 +1,6 @@
+D:\Vali PLC\desktop-app-digital-laboratory\DataClass\bin\Debug\DataClass.dll
+D:\Vali PLC\desktop-app-digital-laboratory\DataClass\bin\Debug\DataClass.pdb
+D:\Vali PLC\desktop-app-digital-laboratory\DataClass\obj\Debug\DataClass.csproj.AssemblyReference.cache
+D:\Vali PLC\desktop-app-digital-laboratory\DataClass\obj\Debug\DataClass.csproj.CoreCompileInputs.cache
+D:\Vali PLC\desktop-app-digital-laboratory\DataClass\obj\Debug\DataClass.dll
+D:\Vali PLC\desktop-app-digital-laboratory\DataClass\obj\Debug\DataClass.pdb

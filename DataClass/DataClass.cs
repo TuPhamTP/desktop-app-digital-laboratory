@@ -38,7 +38,7 @@ namespace DataClass
         public byte DI, DO;
         public ushort AI, AO;
         public float velSP, vel, posSP, pos, posHome;
-        public byte panelSwitchIn, panelSwitchOut;
+
     }
     public class DataDAToInverter   //PLCSIM --> DA --> Inverter ảo
     {
@@ -61,7 +61,7 @@ namespace DataClass
     public class DataValiPLCToDA
     {
         public byte idV5;
-        public byte DI, paneSwitchIn;
+        public byte DI;
         public ushort AI;
         public bool LS1;
         public bool LS2;
@@ -119,7 +119,7 @@ namespace DataClass
     public class DataDAToRValiPLC           //Giá trị từ ValiPLC thật --> DA --> AR cho ValiPLC thật
     {
         public byte idR3;
-        public byte DI, DO, panelSwitchIn, panelSwitchOut;
+        public byte DI, DO;
         public ushort AI, AO;
         public float velSP, vel, posSP, pos, velEnc, posEnc;
         public bool LS1, LS2;
